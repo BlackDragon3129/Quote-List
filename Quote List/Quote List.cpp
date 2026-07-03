@@ -7,6 +7,9 @@
 #include <Quote.hpp>
 #include <BaseLibrary.hpp>
 
+#include <UI/Menu.hpp>
+#include <UI/MenuOption.hpp>
+
 using namespace std;
 using namespace QuoteList;
 
@@ -29,23 +32,22 @@ int main()
 	// The list of every quote
 	std::vector<Quote> quotes;
 
-	// Quote creation
-	std::string content, author, source;
+	// Menu Test
+	UI::Menu menu("Quotes List");
 
-	content = Input("Enter quote's content: ");
-	author = Input("Enter quote's author (if the author is unknown, type \"-\"): ");
-	source = Input("Enter quote's source (book/film/song where the quote has been taken; if it's unknown, type \"-\"): ");
+	menu.AddOption(UI::MenuOption("Add quote", []() {} ));
+	menu.AddOption(UI::MenuOption("Quotes list", []() {}));
+	menu.AddOption(UI::MenuOption("Import quotes", []() {}));
+	menu.AddOption(UI::MenuOption("Settings", []() {}));
+	menu.AddOption(UI::MenuOption("GitHub", []() {}));
+	menu.AddOption(UI::MenuOption("Add quote", []() { exit(0); }));
 
-	author = author == "-" ? "" : author;
-	source = source == "-" ? "" : source;
+	menu.Draw();
 
-	try
+	// Input loop
+	while (true)
 	{
-		Quote(content, author, source).Print();
-	}
-	catch (std::invalid_argument)
-	{
-		std::cout << "Content must be not an empty string!" << std::endl;
+
 	}
 
 	return 0;

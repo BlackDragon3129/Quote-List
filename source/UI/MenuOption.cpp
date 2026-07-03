@@ -1,11 +1,11 @@
-#include <UI/MenuVariant.hpp>
+#include <UI/MenuOption.hpp>
 #include <BaseLibrary.hpp>
 
 
 using namespace QuoteList::UI;
 
 
-MenuVariant::MenuVariant(const char* name, const unsigned char& x, const unsigned char& y,
+MenuOption::MenuOption(const char* name, const unsigned char& x, const unsigned char& y,
 	const Function& action)
 {
 	Name = name;
@@ -14,7 +14,7 @@ MenuVariant::MenuVariant(const char* name, const unsigned char& x, const unsigne
 	Action = action;
 }
 
-void MenuVariant::CallAction() const
+void MenuOption::CallAction() const
 {
 	if (Action)
 		Action();

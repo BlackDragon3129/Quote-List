@@ -2,6 +2,8 @@
 #include <Windows.h>
 #include <iostream>
 #include <functional>
+#include <chrono>
+#include <thread>
 
 namespace QuoteList
 {
@@ -51,6 +53,12 @@ namespace QuoteList
 		coord.X = x;
 		coord.Y = y;
 		SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	}
+
+
+	static void Sleep(float seconds)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds((int)(seconds * 1000)));
 	}
 
 	typedef std::function<void()> Function;

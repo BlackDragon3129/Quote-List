@@ -2,6 +2,7 @@
 #include <exception>
 #include <clocale>
 #include <vector>
+#include <conio.h>
 #include <string>
 
 #include <Quote.hpp>
@@ -40,14 +41,42 @@ int main()
 	menu.AddOption(UI::MenuOption("Import quotes", []() {}));
 	menu.AddOption(UI::MenuOption("Settings", []() {}));
 	menu.AddOption(UI::MenuOption("GitHub", []() {}));
-	menu.AddOption(UI::MenuOption("Add quote", []() { exit(0); }));
+	menu.AddOption(UI::MenuOption("Exit", []() { exit(0); }));
 
 	menu.Draw();
 
 	// Input loop
 	while (true)
 	{
+		if (_kbhit())
+		{
+			switch (_getch())
+			{
+				// Up movement
+			case 'W':
+			case 'w':
+			case KeyCode::UP_ARROW:
+				menu.ChangeCurrentOption(-1);
+				break;
 
+				// Down movement
+			case 'S':
+			case 's':
+			case KeyCode::DOWN_ARROW:
+				menu.ChangeCurrentOption(1);
+				break;
+
+				// Option action call
+			case KeyCode::ENTER:
+				menu.OptionAct();
+				break;
+
+				// Exit
+			case KeyCode::ESCAPE:
+				exit(0);
+				break;
+			}
+		}
 	}
 
 	return 0;

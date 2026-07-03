@@ -66,6 +66,8 @@ void Menu::Open()
 {
 	m_opened = true;
 
+	Draw();
+
 	// Input loop
 	while (m_opened)
 	{

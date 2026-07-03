@@ -5,11 +5,12 @@
 using namespace QuoteList::UI;
 
 
-Menu::Menu(const char* name)
+Menu::Menu(const char* name, Menu* previousMenu)
 {
 	m_name = name;
 	m_currentOptionIndex = 0;
 	m_opened = false;
+	m_previousMenu = previousMenu;
 }
 
 
@@ -64,6 +65,11 @@ void Menu::OptionAct()
 
 void Menu::Open()
 {
+	if (m_previousMenu != nullptr)
+	{
+		m_previousMenu->Close();
+	}
+
 	m_opened = true;
 
 	Draw();
@@ -101,4 +107,12 @@ void Menu::Open()
 			}
 		}
 	}
+}
+void Menu::Close()
+{
+	if (m_previousMenu != nullptr)
+	{
+		m_previousMenu->Open();
+	}
+	m_opened = false;
 }

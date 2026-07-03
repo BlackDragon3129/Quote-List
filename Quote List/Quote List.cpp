@@ -18,7 +18,7 @@ using namespace QuoteList;
 // The list of quotes
 std::vector<Quote> quotes;
 // Menu
-UI::Menu menu("Quotes List");
+UI::Menu mainMenu("Quotes List");
 
 
 
@@ -40,6 +40,7 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 	std::string content, author, source;
 
 	content = Input("Enter quote's content: ");
+	// It's impossible to create empty quote
 	if (content == "")
 	{
 		std::cout << "Quote must be not empty!" << std::endl;
@@ -59,19 +60,44 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 }
 
 
+static void ShowQuotesList()
+{
+	system("cls");
+
+	std::cout << "Quotes list" << "\n\n";
+
+	if (quotes.size() != 0)
+	{
+		for (const Quote& quote : quotes)
+		{
+			quote.Print();
+		}
+	}
+	else
+	{
+		std::cout << "It's empty so far :(" << std::endl;
+	}
+
+	std::cout << "\nPress ESC to go back...";
+
+	UI::Menu quotesList("", &mainMenu);
+	quotesList.Open(false);
+}
+
+
 int main()
 {
 	std::setlocale(LC_ALL, "");
 
 	// Menu Test
-	menu.AddOption(UI::MenuOption("Add quote", []() { CreateQuote(&quotes, &menu); }));
-	menu.AddOption(UI::MenuOption("Quotes list", []() {}));
-	menu.AddOption(UI::MenuOption("Import quotes", []() {}));
-	menu.AddOption(UI::MenuOption("Settings", []() {}));
-	menu.AddOption(UI::MenuOption("GitHub", []() {}));
-	menu.AddOption(UI::MenuOption("Exit", []() { exit(0); }));
+	mainMenu.AddOption(UI::MenuOption("Add quote", []() { CreateQuote(&quotes, &mainMenu); }));
+	mainMenu.AddOption(UI::MenuOption("Quotes list", []() { ShowQuotesList(); }));
+	mainMenu.AddOption(UI::MenuOption("Import quotes", []() {}));
+	mainMenu.AddOption(UI::MenuOption("Settings", []() {}));
+	mainMenu.AddOption(UI::MenuOption("GitHub", []() {}));
+	mainMenu.AddOption(UI::MenuOption("Exit", []() { exit(0); }));
 
-	menu.Open();
+	mainMenu.Open();
 
 	return 0;
 }

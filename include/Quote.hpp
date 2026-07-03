@@ -7,10 +7,9 @@ namespace QuoteList
 {
 	struct Quote
 	{
-		std::string Author, Source;
+		std::string Content, Author, Source;
 
-		Quote();
-		Quote(const std::string& author);
-		Quote(const std::string& author, const std::string& source);
+		Quote(const std::string& content, const std::string& author = "", 
+			const std::string& source = "");
 	};
 }

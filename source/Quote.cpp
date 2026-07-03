@@ -1,20 +1,15 @@
 #include <Quote.hpp>
 #include <iostream>
+#include <exception>
 
 using namespace QuoteList;
 
-Quote::Quote()
+Quote::Quote(const std::string& content, const std::string& author, const std::string& source)
 {
+	if (content == "")
+		throw std::invalid_argument("The quote can not be empty");
+
+	Content = content;
 	Author = "";
-	Author = "";
-}
-Quote::Quote(const std::string& author)
-{
-	Author = author;
 	Source = "";
-}
-Quote::Quote(const std::string& author, const std::string& source)
-{
-	Author = author;
-	Source = source;
 }

@@ -1,5 +1,6 @@
 #include <UI/Menu.hpp>
 #include <BaseLibrary.hpp>
+#include <conio.h>
 
 using namespace QuoteList::UI;
 
@@ -8,6 +9,7 @@ Menu::Menu(const char* name)
 {
 	m_name = name;
 	m_currentOptionIndex = 0;
+	m_opened = false;
 }
 
 
@@ -57,4 +59,44 @@ void Menu::Draw() const
 void Menu::OptionAct()
 {
 	m_options.at(m_currentOptionIndex).CallAction();
+}
+
+
+void Menu::Open()
+{
+	m_opened = true;
+
+	// Input loop
+	while (m_opened)
+	{
+		if (_kbhit())
+		{
+			switch (_getch())
+			{
+				// Up movement
+			case 'W':
+			case 'w':
+			case KeyCode::UP_ARROW:
+				ChangeCurrentOption(-1);
+				break;
+
+				// Down movement
+			case 'S':
+			case 's':
+			case KeyCode::DOWN_ARROW:
+				ChangeCurrentOption(1);
+				break;
+
+				// Option action call
+			case KeyCode::ENTER:
+				OptionAct();
+				break;
+
+				// Exit
+			case KeyCode::ESCAPE:
+				m_opened = false;
+				break;
+			}
+		}
+	}
 }

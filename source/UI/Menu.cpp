@@ -21,10 +21,12 @@ void Menu::ChangeCurrentOption(const int& change)
 {
 	m_currentOptionIndex = Math::ClampReverse
 	(
-		m_currentOptionIndex + change,
-		0u,
-		(unsigned int)(m_options.size() - 1)
+		(int)(m_currentOptionIndex + change),
+		0,
+		(int)(m_options.size() - 1)
 	);
+
+	Draw();
 }
 
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-
+#include <BaseLibrary.hpp>
 
 
 namespace QuoteList
@@ -14,7 +14,10 @@ namespace QuoteList
 			unsigned char X, Y;
 			Function Action;
 
-			MenuVariant()
+			MenuVariant(const char* name, const unsigned char& x, const unsigned char& y,
+				const Function& action);
+
+			void CallAction() const;
 		};
 	}
 }

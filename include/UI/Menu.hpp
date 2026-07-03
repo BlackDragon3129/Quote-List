@@ -22,10 +22,10 @@ namespace QuoteList
 
 			void AddOption(MenuOption& newOption);
 			void ChangeCurrentOption(const int& change);
-			void Draw() const;
+			void Draw(const bool& clearConsole = true) const;
 			void OptionAct();
 
-			void Open();
+			void Open(const bool& clearConsole = true);
 			void Close();
 		};
 	}

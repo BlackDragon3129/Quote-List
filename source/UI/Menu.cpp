@@ -33,9 +33,12 @@ void Menu::ChangeCurrentOption(const int& change)
 }
 
 
-void Menu::Draw() const
+void Menu::Draw(const bool& clearConsole) const
 {
-	system("cls");
+	if (clearConsole)
+	{
+		system("cls");
+	}
 
 	// Menu's name output
 	std::cout << m_name;
@@ -59,11 +62,15 @@ void Menu::Draw() const
 
 void Menu::OptionAct()
 {
-	m_options.at(m_currentOptionIndex).CallAction();
+	try
+	{
+		m_options.at(m_currentOptionIndex).CallAction();
+	}
+	catch (std::out_of_range) {}
 }
 
 
-void Menu::Open()
+void Menu::Open(const bool& clearConsole)
 {
 	if (m_previousMenu != nullptr)
 	{
@@ -72,7 +79,7 @@ void Menu::Open()
 
 	m_opened = true;
 
-	Draw();
+	Draw(clearConsole);
 
 	// Input loop
 	while (m_opened)
@@ -102,7 +109,7 @@ void Menu::Open()
 
 				// Exit
 			case KeyCode::ESCAPE:
-				m_opened = false;
+				Close();
 				break;
 			}
 		}
@@ -110,9 +117,9 @@ void Menu::Open()
 }
 void Menu::Close()
 {
+	m_opened = false;
 	if (m_previousMenu != nullptr)
 	{
 		m_previousMenu->Open();
 	}
-	m_opened = false;
 }

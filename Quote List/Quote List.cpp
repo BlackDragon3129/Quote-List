@@ -5,6 +5,7 @@
 #include <string>
 
 #include <Quote.hpp>
+#include <BaseLibrary.hpp>
 
 using namespace std;
 using namespace QuoteList;

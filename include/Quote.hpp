@@ -11,5 +11,7 @@ namespace QuoteList
 
 		Quote(const std::string& content, const std::string& author = "", 
 			const std::string& source = "");
+
+		void Print() const;
 	};
 }

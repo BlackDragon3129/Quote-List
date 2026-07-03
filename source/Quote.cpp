@@ -13,3 +13,9 @@ Quote::Quote(const std::string& content, const std::string& author, const std::s
 	Author = "";
 	Source = "";
 }
+
+
+void Quote::Print() const
+{
+	std::cout << "«" << Content << "» - (c) " << Author << ", «" << Source << "»" << std::endl;
+}

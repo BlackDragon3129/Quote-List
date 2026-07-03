@@ -11,11 +11,9 @@ namespace QuoteList
 		struct MenuOption
 		{
 			const char* Name;
-			unsigned char X, Y;
 			Function Action;
 
-			MenuOption(const char* name, const unsigned char& x, const unsigned char& y,
-				const Function& action);
+			MenuOption(const char* name, const Function& action);
 
 			void CallAction() const;
 		};

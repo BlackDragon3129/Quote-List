@@ -57,29 +57,28 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	Quote newQuote = Quote(content, author, source);
-	quotesList->push_back(newQuote);
+	quotesList->push_back(Quote(content, author, source));
 
 	// Author found
 	if (quotesByAuthors.find(author) != quotesByAuthors.end())
 	{
-		quotesByAuthors[author].push_back(&newQuote);
+		quotesByAuthors[author].push_back(&quotes.back());
 	}
 	// Author not found
 	else
 	{
-		quotesByAuthors.insert({ author, { &newQuote } });
+		quotesByAuthors.insert({ author, { &quotes.back() } });
 	}
 
 	// Source found
 	if (quotesBySources.find(source) != quotesBySources.end())
 	{
-		quotesBySources[source].push_back(&newQuote);
+		quotesBySources[source].push_back(&quotes.back());
 	}
 	// Source not found
 	else
 	{
-		quotesBySources.insert({ source, { &newQuote } });
+		quotesBySources.insert({ source, { &quotes.back() } });
 	}
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
@@ -94,7 +93,52 @@ static void ShowQuotesList()
 	UI::Menu sortTypeMenu(L"Chooce sort type", &mainMenu);
 
 	sortTypeMenu.AddOption(UI::MenuOption(L"Sort by authors", []() {}));
-	sortTypeMenu.AddOption(UI::MenuOption(L"Sort by sources", []() {}));
+	sortTypeMenu.AddOption
+	(
+		UI::MenuOption
+		(
+			L"Sort by sources",
+			[&sortTypeMenu]()
+			{
+				UI::Menu sourceChoosingMenu(L"Choose a source", &sortTypeMenu);
+
+				for (const auto& pair : quotesBySources)
+				{
+					sourceChoosingMenu.AddOption
+					(
+						UI::MenuOption
+						(
+							pair.first.c_str(), 
+							[&sourceChoosingMenu, 
+							&sourceName = pair.first, &sourceQuotes = pair.second]()
+							{
+								system("cls");
+
+								std::wcout << L"Quotes from " << sourceName << L"\n\n";
+
+								// Print every quote from the chosen source
+								for (const Quote* quote : sourceQuotes)
+								{
+									quote->Print();
+								}
+
+								std::wcout << L"\nPress ESC to go back...";
+
+								// For going back by Esc
+								UI::Menu crutchMenu(L"", &sourceChoosingMenu);
+								crutchMenu.Open(false);
+							}
+						)
+					);
+				}
+
+				sourceChoosingMenu.AddOption(UI::MenuOption(L"Back",
+					[&sourceChoosingMenu]() { sourceChoosingMenu.Close(); }));
+
+				sourceChoosingMenu.Open();
+			}
+		)
+	);
 
 	sortTypeMenu.AddOption
 	(
@@ -105,15 +149,19 @@ static void ShowQuotesList()
 			{
 				system("cls");
 
+				// Header
 				std::wcout << L"Full quotes list" << "\n\n";
 
+				// If there are any quotes
 				if (quotes.size() != 0)
 				{
+					// Print every quote
 					for (const Quote& quote : quotes)
 					{
 						quote.Print();
 					}
 				}
+				// If there are no quotes
 				else
 				{
 					std::wcout << L"It's empty so far :(" << std::endl;
@@ -121,6 +169,7 @@ static void ShowQuotesList()
 
 				std::wcout << L"\nPress ESC to go back...";
 
+				// For going back by Esc
 				UI::Menu crutchMenu(L"", &sortTypeMenu);
 				crutchMenu.Open(false);
 			}

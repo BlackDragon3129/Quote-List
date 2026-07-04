@@ -2,6 +2,7 @@
 #include <exception>
 #include <clocale>
 #include <vector>
+#include <map>
 #include <string>
 
 #include <Quote.hpp>
@@ -17,6 +18,8 @@ using namespace QuoteList;
 
 // The list of quotes
 std::vector<Quote> quotes;
+std::map<std::string, std::vector<Quote*>> quotesByAuthors, quotesBySources;
+
 // Menu
 UI::Menu mainMenu("Quotes List");
 
@@ -62,26 +65,12 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 
 static void ShowQuotesList()
 {
-	system("cls");
+	UI::Menu sortTypeMenu("Chooce sort type", &mainMenu);
 
-	std::cout << "Quotes list" << "\n\n";
-
-	if (quotes.size() != 0)
-	{
-		for (const Quote& quote : quotes)
-		{
-			quote.Print();
-		}
-	}
-	else
-	{
-		std::cout << "It's empty so far :(" << std::endl;
-	}
-
-	std::cout << "\nPress ESC to go back...";
-
-	UI::Menu quotesList("", &mainMenu);
-	quotesList.Open(false);
+	sortTypeMenu.AddOption(UI::MenuOption("Sort by authors", []() {}));
+	sortTypeMenu.AddOption(UI::MenuOption("Sort by sources", []() {}));
+	sortTypeMenu.AddOption(UI::MenuOption("Show full list", []() {}));
+	sortTypeMenu.AddOption(UI::MenuOption("Back", []() {}));
 }
 
 
@@ -89,7 +78,7 @@ int main()
 {
 	std::setlocale(LC_ALL, "");
 
-	// Menu Test
+	// Menu initialisation
 	mainMenu.AddOption(UI::MenuOption("Add quote", []() { CreateQuote(&quotes, &mainMenu); }));
 	mainMenu.AddOption(UI::MenuOption("Quotes list", []() { ShowQuotesList(); }));
 	mainMenu.AddOption(UI::MenuOption("Import quotes", []() {}));

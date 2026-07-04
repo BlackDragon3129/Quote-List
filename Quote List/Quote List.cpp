@@ -40,7 +40,7 @@ static std::wstring Input(const wchar_t* prompt)
 }
 
 
-static void CreateQuote(UI::Menu* menu)
+static void CreateQuote()
 {
 	system("cls");
 
@@ -69,7 +69,18 @@ static void CreateQuote(UI::Menu* menu)
 	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
 
-	menu->Draw();
+	mainMenu.Draw();
+}
+
+
+static void DeleteQuote()
+{
+	UI::Menu deletionMenu(L"Choose a quote to delete", &mainMenu);
+
+	for (const std::unique_ptr<Quote>& quote : quotes)
+	{
+		deletionMenu.AddOption(UI::MenuOption(quote.get()->Format().c_str(), []() {}));
+	}
 }
 
 
@@ -103,7 +114,7 @@ static void ShowQuotesList()
 								// Print every quote from the chosen author
 								for (const Quote* quote : authorQuotes)
 								{
-									quote->Print();
+									std::wcout << quote->Format() << std::endl;
 								}
 
 								std::wcout << L"\nPress ESC to go back...";
@@ -150,7 +161,7 @@ static void ShowQuotesList()
 								// Print every quote from the chosen source
 								for (const Quote* quote : sourceQuotes)
 								{
-									quote->Print();
+									std::wcout << quote->Format() << std::endl;
 								}
 
 								std::wcout << L"\nPress ESC to go back...";
@@ -189,7 +200,7 @@ static void ShowQuotesList()
 					// Print every quote
 					for (const unique_ptr<Quote>& quote : quotes)
 					{
-						quote.get()->Print();
+						std::wcout << quote.get()->Format() << std::endl;
 					}
 				}
 				// If there are no quotes
@@ -219,7 +230,7 @@ int wmain(int argc, wchar_t* argv[])
 	_setmode(_fileno(stderr), _O_U16TEXT);
 
 	// Menu initialisation
-	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(&mainMenu); }));
+	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Delete quote", []() {} ));
 	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));

@@ -2,6 +2,7 @@
 #include <exception>
 #include <clocale>
 #include <vector>
+#include <list>
 #include <map>
 #include <string>
 #include <Windows.h>
@@ -20,7 +21,7 @@ using namespace QuoteList;
 
 
 // The list of quotes
-std::vector<Quote> quotes;
+std::list<std::unique_ptr<Quote>> quotes;
 std::map<std::wstring, std::vector<Quote*>> quotesByAuthors, quotesBySources;
 
 // Menu
@@ -39,7 +40,7 @@ static std::wstring Input(const wchar_t* prompt)
 }
 
 
-static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
+static void CreateQuote(UI::Menu* menu)
 {
 	system("cls");
 
@@ -57,29 +58,13 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	quotesList->push_back(Quote(content, author, source));
+	quotes.push_back(std::make_unique<Quote>(content, author, source));
 
 	// Author found
-	if (quotesByAuthors.find(author) != quotesByAuthors.end())
-	{
-		quotesByAuthors[author].push_back(&quotes.back());
-	}
-	// Author not found
-	else
-	{
-		quotesByAuthors.insert({ author, { &quotes.back() } });
-	}
+	quotesByAuthors[author].push_back(quotes.back().get());
 
 	// Source found
-	if (quotesBySources.find(source) != quotesBySources.end())
-	{
-		quotesBySources[source].push_back(&quotes.back());
-	}
-	// Source not found
-	else
-	{
-		quotesBySources.insert({ source, { &quotes.back() } });
-	}
+	quotesBySources[source].push_back(quotes.back().get());
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
@@ -202,9 +187,9 @@ static void ShowQuotesList()
 				if (quotes.size() != 0)
 				{
 					// Print every quote
-					for (const Quote& quote : quotes)
+					for (const unique_ptr<Quote>& quote : quotes)
 					{
-						quote.Print();
+						quote.get()->Print();
 					}
 				}
 				// If there are no quotes
@@ -234,7 +219,8 @@ int wmain(int argc, wchar_t* argv[])
 	_setmode(_fileno(stderr), _O_U16TEXT);
 
 	// Menu initialisation
-	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(&quotes, &mainMenu); }));
+	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(&mainMenu); }));
+	mainMenu.AddOption(UI::MenuOption(L"Delete quote", []() {} ));
 	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
 	mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));

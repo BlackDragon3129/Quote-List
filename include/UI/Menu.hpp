@@ -27,6 +27,7 @@ namespace QuoteList
 
 			void Open(const bool& clearConsole = true);
 			void Close();
+			void Pause();
 		};
 	}
 }

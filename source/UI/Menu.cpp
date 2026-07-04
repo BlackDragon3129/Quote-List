@@ -74,15 +74,16 @@ void Menu::Open(const bool& clearConsole)
 {
 	if (m_previousMenu != nullptr)
 	{
-		m_previousMenu->Close();
+		m_previousMenu->Pause();
 	}
 
+	m_paused = false;
 	m_opened = true;
 
 	Draw(clearConsole);
 
 	// Input loop
-	while (m_opened)
+	while (m_opened && !m_paused)
 	{
 		if (_kbhit())
 		{
@@ -117,9 +118,13 @@ void Menu::Open(const bool& clearConsole)
 }
 void Menu::Close()
 {
-	m_opened = false;
-	if (m_previousMenu != nullptr )
+	m_paused = m_opened = false;
+	if (m_previousMenu != nullptr)
 	{
 		m_previousMenu->Open();
 	}
+}
+void Menu::Pause()
+{
+	m_paused = true;
 }

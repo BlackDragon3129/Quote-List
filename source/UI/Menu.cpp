@@ -7,6 +7,8 @@ using namespace QuoteList::UI;
 
 Menu::Menu(const char* name, Menu* previousMenu)
 {
+	m_currentMenu = nullptr;
+
 	m_name = name;
 	m_currentOptionIndex = 0;
 	m_opened = false;

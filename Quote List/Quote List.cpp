@@ -84,15 +84,15 @@ static void ShowQuotesList()
 			L"Sort by authors", 
 			[&sortTypeMenu]()
 			{
-				UI::Menu authorChoosingMenu(L"Choose a source", &sortTypeMenu);
+				UI::Menu authorChoosingMenu(L"Choose an author", &sortTypeMenu);
 
-				for (const auto& pair : quotesBySources)
+				for (const auto& pair : quotesByAuthors)
 				{
 					authorChoosingMenu.AddOption
 					(
 						UI::MenuOption
 						(
-							pair.first.c_str(),
+							(pair.first == L"" ? L"Unknown author" : pair.first.c_str()),
 							[&authorChoosingMenu,
 							&authorName = pair.first, &authorQuotes = pair.second]()
 							{
@@ -139,7 +139,7 @@ static void ShowQuotesList()
 					(
 						UI::MenuOption
 						(
-							pair.first.c_str(), 
+							(pair.first == L"" ? L"Unknown source" : pair.first.c_str()),
 							[&sourceChoosingMenu, 
 							&sourceName = pair.first, &sourceQuotes = pair.second]()
 							{

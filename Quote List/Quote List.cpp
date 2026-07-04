@@ -92,7 +92,53 @@ static void ShowQuotesList()
 {
 	UI::Menu sortTypeMenu(L"Chooce sort type", &mainMenu);
 
-	sortTypeMenu.AddOption(UI::MenuOption(L"Sort by authors", []() {}));
+	sortTypeMenu.AddOption
+	(
+		UI::MenuOption
+		(
+			L"Sort by authors", 
+			[&sortTypeMenu]()
+			{
+				UI::Menu authorChoosingMenu(L"Choose a source", &sortTypeMenu);
+
+				for (const auto& pair : quotesBySources)
+				{
+					authorChoosingMenu.AddOption
+					(
+						UI::MenuOption
+						(
+							pair.first.c_str(),
+							[&authorChoosingMenu,
+							&authorName = pair.first, &authorQuotes = pair.second]()
+							{
+								system("cls");
+
+								std::wcout << L"Quotes from " << authorName << L"\n\n";
+
+								// Print every quote from the chosen author
+								for (const Quote* quote : authorQuotes)
+								{
+									quote->Print();
+								}
+
+								std::wcout << L"\nPress ESC to go back...";
+
+								// For going back by Esc
+								UI::Menu crutchMenu(L"", &authorChoosingMenu);
+								crutchMenu.Open(false);
+							}
+						)
+					);
+				}
+
+				authorChoosingMenu.AddOption(UI::MenuOption(L"Back",
+					[&authorChoosingMenu]() { authorChoosingMenu.Close(); }));
+
+				authorChoosingMenu.Open();
+			}
+		)
+	);
+
 	sortTypeMenu.AddOption
 	(
 		UI::MenuOption

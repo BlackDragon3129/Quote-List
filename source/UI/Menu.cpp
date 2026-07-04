@@ -7,11 +7,9 @@ using namespace QuoteList::UI;
 
 Menu::Menu(const char* name, Menu* previousMenu)
 {
-	m_currentMenu = nullptr;
-
 	m_name = name;
 	m_currentOptionIndex = 0;
-	m_opened = false;
+	m_paused = m_opened = false;
 	m_previousMenu = previousMenu;
 }
 
@@ -120,7 +118,7 @@ void Menu::Open(const bool& clearConsole)
 void Menu::Close()
 {
 	m_opened = false;
-	if (m_previousMenu != nullptr)
+	if (m_previousMenu != nullptr )
 	{
 		m_previousMenu->Open();
 	}

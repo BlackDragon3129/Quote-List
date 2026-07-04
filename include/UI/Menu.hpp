@@ -11,13 +11,11 @@ namespace QuoteList
 	{
 		class Menu
 		{
-			static Menu* m_currentMenu;
-
 			Menu* m_previousMenu;
 			std::vector<MenuOption> m_options;
 			const char* m_name;
 			unsigned int m_currentOptionIndex;
-			bool m_opened;
+			bool m_opened, m_paused;
 
 		public:
 			Menu(const char* name, Menu* previousMenu = nullptr);

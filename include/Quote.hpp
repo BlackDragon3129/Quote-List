@@ -14,6 +14,6 @@ namespace QuoteList
 		Quote(const std::wstring& content, const std::wstring& author = L"", 
 			const std::wstring& source = L"");
 
-		void Print() const;
+		std::wstring Format() const;
 	};
 }

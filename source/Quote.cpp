@@ -21,12 +21,12 @@ Quote::Quote(const std::wstring& content, const std::wstring& author, const std:
 void Quote::Print() const
 {
 	std::wstring author = (Author == L"" ? L"unknown author" : Author);
-	// "Content" - (c) Author
-	std::wstring out = L"\"" + Content + L"\"" + L" - " + author;
+	// «Content» - (c) Author
+	std::wstring out = L"«" + Content + L"»" + L" - " + author;
 	// If source is not empty
-	// "Content" - (c) Author, "Source"
+	// «Content» - (c) Author, «Source»
 	if (Source != L"")
-		out += L", \"" + Source + L"\"";
+		out += L", «" + Source + L"»";
 
 	std::wcout << out << std::endl;
 }

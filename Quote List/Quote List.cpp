@@ -40,6 +40,39 @@ static std::wstring Input(const wchar_t* prompt)
 }
 
 
+static void CreateQuote()
+{
+	system("cls");
+
+	std::wstring content, author, source;
+
+	content = Input(L"Enter quote's content: ");
+	// It's impossible to create empty quote
+	if (content == L"")
+	{
+		std::cout << "Quote must be not empty!" << std::endl;
+		Sleep(2.0f);
+		return;
+	}
+
+	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
+	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
+
+	quotes.push_back(std::make_unique<Quote>(content, author, source));
+
+	// Author found
+	quotesByAuthors[author].push_back(quotes.back().get());
+
+	// Source found
+	quotesBySources[source].push_back(quotes.back().get());
+
+	std::wcout << "The quote has been successfully created!" << std::endl;
+	Sleep(2.0f);
+
+	mainMenu.Draw();
+}
+
+
 static void ShowQuotesList()
 {
 	UI::Menu sortTypeMenu(L"Chooce sort type", &mainMenu);
@@ -187,7 +220,6 @@ int wmain(int argc, wchar_t* argv[])
 
 	// Menu initialisation
 	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(); }));
-	mainMenu.AddOption(UI::MenuOption(L"Delete quote", []() { DeleteQuote(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
 	mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));

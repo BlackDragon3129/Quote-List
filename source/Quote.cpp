@@ -2,12 +2,14 @@
 #include <iostream>
 #include <exception>
 #include <format>
+#include <io.h>
+#include <fcntl.h>
 
 using namespace QuoteList;
 
-Quote::Quote(const std::string& content, const std::string& author, const std::string& source)
+Quote::Quote(const std::wstring& content, const std::wstring& author, const std::wstring& source)
 {
-	if (content == "")
+	if (content == L"")
 		throw std::invalid_argument("The quote can not be empty");
 
 	Content = content;
@@ -18,13 +20,13 @@ Quote::Quote(const std::string& content, const std::string& author, const std::s
 
 void Quote::Print() const
 {
-	std::string author = (Author == "" ? "unknown author" : Author);
+	std::wstring author = (Author == L"" ? L"unknown author" : Author);
 	// "Content" - (c) Author
-	std::string out = "\"" + Content + "\"" + " - " + author;
+	std::wstring out = L"\"" + Content + L"\"" + L" - " + author;
 	// If source is not empty
 	// "Content" - (c) Author, "Source"
-	if (Source != "")
-		out += ", \"" + Source + "\"";
+	if (Source != L"")
+		out += L", \"" + Source + L"\"";
 
-	std::cout << out << std::endl;
+	std::wcout << out << std::endl;
 }

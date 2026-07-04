@@ -4,6 +4,9 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <Windows.h>
+#include <io.h>
+#include <fcntl.h>
 
 #include <Quote.hpp>
 #include <BaseLibrary.hpp>
@@ -18,19 +21,19 @@ using namespace QuoteList;
 
 // The list of quotes
 std::vector<Quote> quotes;
-std::map<std::string, std::vector<Quote*>> quotesByAuthors, quotesBySources;
+std::map<std::wstring, std::vector<Quote*>> quotesByAuthors, quotesBySources;
 
 // Menu
-UI::Menu mainMenu("Quotes List");
+UI::Menu mainMenu(L"Quotes List");
 
 
 
-static std::string Input(const char* prompt)
+static std::wstring Input(const wchar_t* prompt)
 {
-	std::string input;
+	std::wstring input;
 
-	std::cout << prompt;
-	std::getline(std::cin, input);
+	std::wcout << prompt;
+	std::getline(std::wcin, input);
 
 	return input;
 }
@@ -40,19 +43,19 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 {
 	system("cls");
 
-	std::string content, author, source;
+	std::wstring content, author, source;
 
-	content = Input("Enter quote's content: ");
+	content = Input(L"Enter quote's content: ");
 	// It's impossible to create empty quote
-	if (content == "")
+	if (content == L"")
 	{
 		std::cout << "Quote must be not empty!" << std::endl;
 		Sleep(2.0f);
 		return;
 	}
 
-	author = Input("Enter quote's author (if the author is unknown, leave the field empty): ");
-	source = Input("Enter quote's source (if the source is unknown, leave the field empty): ");
+	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
+	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
 	Quote newQuote = Quote(content, author, source);
 	quotesList->push_back(newQuote);
@@ -79,7 +82,7 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 		quotesBySources.insert({ source, { &newQuote } });
 	}
 
-	std::cout << "The quote has been successfully created!" << std::endl;
+	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
 
 	menu->Draw();
@@ -88,21 +91,21 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 
 static void ShowQuotesList()
 {
-	UI::Menu sortTypeMenu("Chooce sort type", &mainMenu);
+	UI::Menu sortTypeMenu(L"Chooce sort type", &mainMenu);
 
-	sortTypeMenu.AddOption(UI::MenuOption("Sort by authors", []() {}));
-	sortTypeMenu.AddOption(UI::MenuOption("Sort by sources", []() {}));
+	sortTypeMenu.AddOption(UI::MenuOption(L"Sort by authors", []() {}));
+	sortTypeMenu.AddOption(UI::MenuOption(L"Sort by sources", []() {}));
 
 	sortTypeMenu.AddOption
 	(
 		UI::MenuOption
 		(
-			"Show full list",
+			L"Show full list",
 			[&sortTypeMenu]() 
 			{
 				system("cls");
 
-				std::cout << "Full quotes list" << "\n\n";
+				std::wcout << L"Full quotes list" << "\n\n";
 
 				if (quotes.size() != 0)
 				{
@@ -113,33 +116,35 @@ static void ShowQuotesList()
 				}
 				else
 				{
-					std::cout << "It's empty so far :(" << std::endl;
+					std::wcout << L"It's empty so far :(" << std::endl;
 				}
 
-				std::cout << "\nPress ESC to go back...";
+				std::wcout << L"\nPress ESC to go back...";
 
-				UI::Menu crutchMenu("", &sortTypeMenu);
+				UI::Menu crutchMenu(L"", &sortTypeMenu);
 				crutchMenu.Open(false);
 			}
 		)
 	);
-	sortTypeMenu.AddOption(UI::MenuOption("Back", [&sortTypeMenu]() { sortTypeMenu.Close(); }));
+	sortTypeMenu.AddOption(UI::MenuOption(L"Back", [&sortTypeMenu]() { sortTypeMenu.Close(); }));
 
 	sortTypeMenu.Open();
 }
 
 
-int main()
+int wmain(int argc, wchar_t* argv[])
 {
-	std::setlocale(LC_ALL, "");
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	_setmode(_fileno(stdin), _O_U16TEXT);
+	_setmode(_fileno(stderr), _O_U16TEXT);
 
 	// Menu initialisation
-	mainMenu.AddOption(UI::MenuOption("Add quote", []() { CreateQuote(&quotes, &mainMenu); }));
-	mainMenu.AddOption(UI::MenuOption("Quotes list", []() { ShowQuotesList(); }));
-	mainMenu.AddOption(UI::MenuOption("Import quotes", []() {}));
-	mainMenu.AddOption(UI::MenuOption("Settings", []() {}));
-	mainMenu.AddOption(UI::MenuOption("GitHub", []() {}));
-	mainMenu.AddOption(UI::MenuOption("Exit", []() { exit(0); }));
+	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(&quotes, &mainMenu); }));
+	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
+	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
+	mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));
+	mainMenu.AddOption(UI::MenuOption(L"GitHub", []() {}));
+	mainMenu.AddOption(UI::MenuOption(L"Exit", []() { exit(0); }));
 
 	mainMenu.Open();
 

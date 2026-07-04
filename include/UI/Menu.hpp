@@ -13,12 +13,12 @@ namespace QuoteList
 		{
 			Menu* m_previousMenu;
 			std::vector<MenuOption> m_options;
-			const char* m_name;
+			const wchar_t* m_name;
 			unsigned int m_currentOptionIndex;
 			bool m_opened, m_paused;
 
 		public:
-			Menu(const char* name, Menu* previousMenu = nullptr);
+			Menu(const wchar_t* name, Menu* previousMenu = nullptr);
 
 			void AddOption(MenuOption& newOption);
 			void ChangeCurrentOption(const int& change);

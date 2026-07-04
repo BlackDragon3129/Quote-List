@@ -1,11 +1,13 @@
 #include <UI/Menu.hpp>
 #include <BaseLibrary.hpp>
 #include <conio.h>
+#include <io.h>
+#include <fcntl.h>
 
 using namespace QuoteList::UI;
 
 
-Menu::Menu(const char* name, Menu* previousMenu)
+Menu::Menu(const wchar_t* name, Menu* previousMenu)
 {
 	m_name = name;
 	m_currentOptionIndex = 0;
@@ -41,7 +43,7 @@ void Menu::Draw(const bool& clearConsole) const
 	}
 
 	// Menu's name output
-	std::cout << m_name;
+	std::wcout << m_name;
 
 	// Options output
 	for (std::size_t i = 0; i < m_options.size(); i++)
@@ -50,12 +52,12 @@ void Menu::Draw(const bool& clearConsole) const
 		if (m_currentOptionIndex == i)
 		{
 			CursorGotoXY(0, 2 + i);
-			std::cout << ">";
+			std::wcout << ">";
 		}
 
 		// Option name output
 		CursorGotoXY(2, 2 + i);
-		std::cout << m_options.at(i).Name;
+		std::wcout << m_options.at(i).Name;
 	}
 }
 

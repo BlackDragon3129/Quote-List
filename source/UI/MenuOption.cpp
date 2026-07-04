@@ -5,7 +5,7 @@
 using namespace QuoteList::UI;
 
 
-MenuOption::MenuOption(const char* name, const Function& action)
+MenuOption::MenuOption(const wchar_t* name, const Function& action)
 {
 	Name = name;
 	Action = action;

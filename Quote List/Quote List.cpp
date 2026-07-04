@@ -54,7 +54,30 @@ static void CreateQuote(std::vector<Quote>* quotesList, UI::Menu* menu)
 	author = Input("Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Input("Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	quotesList->push_back(Quote(content, author, source));
+	Quote newQuote = Quote(content, author, source);
+	quotesList->push_back(newQuote);
+
+	// Author found
+	if (quotesByAuthors.find(author) != quotesByAuthors.end())
+	{
+		quotesByAuthors[author].push_back(&newQuote);
+	}
+	// Author not found
+	else
+	{
+		quotesByAuthors.insert({ author, { &newQuote } });
+	}
+
+	// Source found
+	if (quotesBySources.find(source) != quotesBySources.end())
+	{
+		quotesBySources[source].push_back(&newQuote);
+	}
+	// Source not found
+	else
+	{
+		quotesBySources.insert({ source, { &newQuote } });
+	}
 
 	std::cout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
@@ -69,8 +92,40 @@ static void ShowQuotesList()
 
 	sortTypeMenu.AddOption(UI::MenuOption("Sort by authors", []() {}));
 	sortTypeMenu.AddOption(UI::MenuOption("Sort by sources", []() {}));
-	sortTypeMenu.AddOption(UI::MenuOption("Show full list", []() {}));
-	sortTypeMenu.AddOption(UI::MenuOption("Back", []() {}));
+
+	sortTypeMenu.AddOption
+	(
+		UI::MenuOption
+		(
+			"Show full list",
+			[&sortTypeMenu]() 
+			{
+				system("cls");
+
+				std::cout << "Full quotes list" << "\n\n";
+
+				if (quotes.size() != 0)
+				{
+					for (const Quote& quote : quotes)
+					{
+						quote.Print();
+					}
+				}
+				else
+				{
+					std::cout << "It's empty so far :(" << std::endl;
+				}
+
+				std::cout << "\nPress ESC to go back...";
+
+				UI::Menu crutchMenu("", &sortTypeMenu);
+				crutchMenu.Open(false);
+			}
+		)
+	);
+	sortTypeMenu.AddOption(UI::MenuOption("Back", [&sortTypeMenu]() { sortTypeMenu.Close(); }));
+
+	sortTypeMenu.Open();
 }
 
 

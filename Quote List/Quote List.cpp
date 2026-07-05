@@ -21,12 +21,28 @@ using namespace QuoteList;
 
 
 // The list of quotes
-std::list<std::unique_ptr<Quote>> quotes;
+std::list<std::unique_ptr<Quote>> quotesList;
 std::map<std::wstring, std::vector<Quote*>> quotesByAuthors, quotesBySources;
 
 // Menu
 UI::Menu mainMenu(L"Quotes List");
 
+
+static std::vector<Quote*> ListToVector(const std::list<std::unique_ptr<Quote>>& list)
+{
+	std::vector<Quote*> destVector;
+	destVector.reserve(list.size());
+
+	for (const std::unique_ptr<Quote>& ptr : list)
+	{
+		if (ptr)
+		{
+			destVector.push_back(ptr.get());
+		}
+	}
+
+	return destVector;
+}
 
 
 static std::wstring Input(const wchar_t* prompt)
@@ -58,18 +74,34 @@ static void CreateQuote()
 	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	quotes.push_back(std::make_unique<Quote>(content, author, source));
+	quotesList.push_back(std::make_unique<Quote>(content, author, source));
 
 	// Author found
-	quotesByAuthors[author].push_back(quotes.back().get());
+	quotesByAuthors[author].push_back(quotesList.back().get());
 
 	// Source found
-	quotesBySources[source].push_back(quotes.back().get());
+	quotesBySources[source].push_back(quotesList.back().get());
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
 
 	mainMenu.Draw();
+}
+
+
+static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousName,
+	const std::vector<Quote*>& quotes)
+{
+	UI::Menu quotesListMenu(menuName, previousName);
+
+	for (const Quote* quote : quotes)
+	{
+		quotesListMenu.AddOption(UI::MenuOption(quote->Format(), []() {}));
+	}
+	quotesListMenu.AddOption(UI::MenuOption(L"Back", 
+		[&quotesListMenu]() {quotesListMenu.Close(); }));
+
+	quotesListMenu.Open();
 }
 
 
@@ -96,21 +128,8 @@ static void ShowQuotesList()
 							[&authorChoosingMenu,
 							&authorName = pair.first, &authorQuotes = pair.second]()
 							{
-								system("cls");
-
-								std::wcout << L"Quotes from " << authorName << L"\n\n";
-
-								// Print every quote from the chosen author
-								for (const Quote* quote : authorQuotes)
-								{
-									std::wcout << quote->Format() << std::endl;
-								}
-
-								std::wcout << L"\nPress ESC to go back...";
-
-								// For going back by Esc
-								UI::Menu crutchMenu(L"", &authorChoosingMenu);
-								crutchMenu.Open(false);
+								OpenQuotesList(L"Quotes from " + authorName,
+									&authorChoosingMenu, authorQuotes);
 							}
 						)
 					);
@@ -143,21 +162,8 @@ static void ShowQuotesList()
 							[&sourceChoosingMenu, 
 							&sourceName = pair.first, &sourceQuotes = pair.second]()
 							{
-								system("cls");
-
-								std::wcout << L"Quotes from " << sourceName << L"\n\n";
-
-								// Print every quote from the chosen source
-								for (const Quote* quote : sourceQuotes)
-								{
-									std::wcout << quote->Format() << std::endl;
-								}
-
-								std::wcout << L"\nPress ESC to go back...";
-
-								// For going back by Esc
-								UI::Menu crutchMenu(L"", &sourceChoosingMenu);
-								crutchMenu.Open(false);
+								OpenQuotesList(L"Quotes from " + sourceName,
+									&sourceChoosingMenu, sourceQuotes);
 							}
 						)
 					);
@@ -178,31 +184,7 @@ static void ShowQuotesList()
 			L"Show full list",
 			[&sortTypeMenu]() 
 			{
-				system("cls");
-
-				// Header
-				std::wcout << L"Full quotes list" << "\n\n";
-
-				// If there are any quotes
-				if (quotes.size() != 0)
-				{
-					// Print every quote
-					for (const unique_ptr<Quote>& quote : quotes)
-					{
-						std::wcout << quote.get()->Format() << std::endl;
-					}
-				}
-				// If there are no quotes
-				else
-				{
-					std::wcout << L"It's empty so far :(" << std::endl;
-				}
-
-				std::wcout << L"\nPress ESC to go back...";
-
-				// For going back by Esc
-				UI::Menu crutchMenu(L"", &sortTypeMenu);
-				crutchMenu.Open(false);
+				OpenQuotesList(L"Full quotes list", &sortTypeMenu, ListToVector(quotesList));
 			}
 		)
 	);

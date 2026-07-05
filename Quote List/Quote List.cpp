@@ -114,7 +114,33 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 							{
 								UI::Menu whatToEditMenu(L"What do you want to edit?", &optionMenu);
 								
-								whatToEditMenu.AddOption(UI::MenuOption(L"Content", []() {}));
+								whatToEditMenu.AddOption
+								(
+									UI::MenuOption
+									(
+										L"Content", 
+										[&whatToEditMenu, &quote]()
+										{
+											system("cls");
+
+											std::wstring newContent = Input(L"Enter new quote's content: ");
+											if (newContent.empty())
+											{
+												std::wcout << L"The quote can not be empty!";
+											}
+											else
+											{
+												quote->Content = newContent;
+												std::wcout << L"The content of the quote has been " <<
+													"successfully changed!";
+											}
+
+											Sleep(2.0f);
+
+											whatToEditMenu.Draw();
+										}
+									)
+								);
 								whatToEditMenu.AddOption(UI::MenuOption(L"Author", []() {}));
 								whatToEditMenu.AddOption(UI::MenuOption(L"Source", []() {}));
 								whatToEditMenu.AddOption(UI::MenuOption(L"Back",

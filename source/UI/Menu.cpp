@@ -7,9 +7,8 @@
 using namespace QuoteList::UI;
 
 
-Menu::Menu(const wchar_t* name, Menu* previousMenu)
+Menu::Menu(const std::wstring& name, Menu* previousMenu) : m_name(name)
 {
-	m_name = name;
 	m_currentOptionIndex = 0;
 	m_paused = m_opened = false;
 	m_previousMenu = previousMenu;

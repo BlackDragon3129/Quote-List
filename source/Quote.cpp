@@ -26,7 +26,7 @@ std::wstring Quote::Format() const
 	// If source is not empty
 	// «Content» - (c) Author, «Source»
 	if (Source != L"")
-		formatedQuote += L", «" + Source + L"»";
+		formatedQuote += L", from «" + Source + L"»";
 
 	return formatedQuote;
 }

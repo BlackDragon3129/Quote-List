@@ -69,6 +69,7 @@ static void CreateQuote()
 	{
 		std::wcout << L"Quote must be not empty!" << std::endl;
 		Sleep(2.0f);
+		mainMenu.Draw();
 		return;
 	}
 
@@ -149,7 +150,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 			UI::MenuOption
 			(
 				quote->Format(),
-				[&quotesListMenu, &quote]()
+				[&previousMenu, &quotesListMenu, &quote]()
 				{
 					UI::Menu optionMenu(L"What to do with the quote?", &quotesListMenu);
 
@@ -158,7 +159,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 						UI::MenuOption
 						(
 							L"Edit",
-							[&optionMenu, &quote]()
+							[&previousMenu, &quotesListMenu, &optionMenu, &quote]()
 							{
 								UI::Menu whatToEditMenu(L"What do you want to edit?", &optionMenu);
 								
@@ -167,7 +168,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 									UI::MenuOption
 									(
 										L"Content", 
-										[&whatToEditMenu, &quote]()
+										[&previousMenu, &quotesListMenu, &optionMenu, &whatToEditMenu, &quote]()
 										{
 											system("cls");
 
@@ -175,17 +176,24 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											if (newContent.empty())
 											{
 												std::wcout << L"The quote can not be empty!";
+
+												Sleep(2.0f);
+
+												whatToEditMenu.Draw();
 											}
 											else
 											{
 												quote->Content = newContent;
 												std::wcout << L"The content of the quote has been " <<
-													"successfully changed! (go back to refresh quotes list)";
+													"successfully changed!";
+
+												Sleep(2.0f);
+
+												whatToEditMenu.Close(false);
+												optionMenu.Close(false);
+												quotesListMenu.Close(false);
+												previousMenu->Close(true);
 											}
-
-											Sleep(2.0f);
-
-											whatToEditMenu.Draw();
 										}
 									)
 								);
@@ -194,7 +202,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 									UI::MenuOption
 									(
 										L"Author", 
-										[&whatToEditMenu, &quote]()
+										[&previousMenu, &quotesListMenu, &optionMenu, &whatToEditMenu, &quote]()
 										{
 											system("cls");
 
@@ -213,11 +221,14 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											quote->Author = newAuthor;
 											quotesByAuthors[newAuthor].push_back(quote);
 
-											std::wcout << L"Author has been successfully changed! " <<
-												L"(go back to refresh quotes list)";
+											std::wcout << L"Author has been successfully changed!";
 
 											Sleep(2.0f);
-											whatToEditMenu.Draw();
+											
+											whatToEditMenu.Close(false);
+											optionMenu.Close(false);
+											quotesListMenu.Close(false);
+											previousMenu->Close(true);
 										}
 									)
 								);
@@ -226,7 +237,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 									UI::MenuOption
 									(
 										L"Source",
-										[&whatToEditMenu, &quote]()
+										[&previousMenu, &quotesListMenu, &optionMenu, &whatToEditMenu, &quote]()
 										{
 											system("cls");
 
@@ -245,11 +256,14 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											quote->Source = newSource;
 											quotesBySources[newSource].push_back(quote);
 
-											std::wcout << L"Source has been successfully changed! " <<
-												L"(go back to refresh quotes list)";
+											std::wcout << L"Source has been successfully changed!";
 
 											Sleep(2.0f);
-											whatToEditMenu.Draw();
+
+											whatToEditMenu.Close(false);
+											optionMenu.Close(false);
+											quotesListMenu.Close(false);
+											previousMenu->Close(true);
 										}
 									)
 								);
@@ -265,7 +279,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 						UI::MenuOption
 						(
 							L"Delete",
-							[&optionMenu, &quote]()
+							[&previousMenu, &quotesListMenu, &optionMenu, &quote]()
 							{
 								UI::Menu areYouSureMenu(L"Are you sure to delete the quote «" +
 									quote->Content + L"»", &optionMenu);
@@ -275,7 +289,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 									UI::MenuOption
 									(
 										L"Yes",
-										[&areYouSureMenu, &quote]() 
+										[&previousMenu, &quotesListMenu, &optionMenu, &areYouSureMenu, &quote]()
 										{
 											system("cls");
 
@@ -284,7 +298,10 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											std::wcout << "The quote has been successfully deleted!";
 											Sleep(2.0f);
 
-											areYouSureMenu.Close();
+											areYouSureMenu.Close(false);
+											optionMenu.Close(false);
+											quotesListMenu.Close(false);
+											previousMenu->Close(true);
 										}
 									)
 								);

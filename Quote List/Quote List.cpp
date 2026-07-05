@@ -57,6 +57,14 @@ static std::wstring Input(const wchar_t* prompt)
 }
 
 
+static void AddQuote(const Quote& newQuote)
+{
+	quotesList.push_back(std::make_unique<Quote>(newQuote));
+	quotesByAuthors[newQuote.Author].push_back(quotesList.back().get());
+	quotesBySources[newQuote.Source].push_back(quotesList.back().get());
+}
+
+
 static void CreateQuote()
 {
 	system("cls");

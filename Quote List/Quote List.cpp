@@ -174,7 +174,38 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 										}
 									)
 								);
-								whatToEditMenu.AddOption(UI::MenuOption(L"Source", []() {}));
+								whatToEditMenu.AddOption
+								(
+									UI::MenuOption
+									(
+										L"Source",
+										[&whatToEditMenu, &quote]()
+										{
+											system("cls");
+
+											std::wstring newSource = Input(L"Enter new quote's source: ");
+
+											std::vector<Quote*>* sourceQuotes = &quotesBySources[quote->Source];
+											sourceQuotes->erase
+											(
+												std::find(sourceQuotes->begin(), sourceQuotes->end(), quote)
+											);
+											if (sourceQuotes->size() == 0)
+											{
+												quotesBySources.erase(quote->Source);
+											}
+
+											quote->Source = newSource;
+											quotesBySources[newSource].push_back(quote);
+
+											std::wcout << L"Source has been successfully changed! " <<
+												L"(go back to refresh quotes list)";
+
+											Sleep(2.0f);
+											whatToEditMenu.Draw();
+										}
+									)
+								);
 								whatToEditMenu.AddOption(UI::MenuOption(L"Back",
 									[&whatToEditMenu]() { whatToEditMenu.Close(); }));
 

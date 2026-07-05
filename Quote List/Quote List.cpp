@@ -133,7 +133,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											{
 												quote->Content = newContent;
 												std::wcout << L"The content of the quote has been " <<
-													"successfully changed!";
+													"successfully changed! (go back to refresh quotes list)";
 											}
 
 											Sleep(2.0f);
@@ -166,7 +166,8 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											quote->Author = newAuthor;
 											quotesByAuthors[newAuthor].push_back(quote);
 
-											std::wcout << L"Author has been successfully changed!";
+											std::wcout << L"Author has been successfully changed! " <<
+												L"(go back to refresh quotes list)";
 
 											Sleep(2.0f);
 											whatToEditMenu.Draw();

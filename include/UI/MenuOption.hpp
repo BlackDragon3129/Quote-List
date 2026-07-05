@@ -10,10 +10,10 @@ namespace QuoteList
 	{
 		struct MenuOption
 		{
-			const wchar_t* Name;
+			const std::wstring Name;
 			Function Action;
 
-			MenuOption(const wchar_t* name, const Function& action);
+			MenuOption(const std::wstring& name, const Function& action);
 
 			void CallAction() const;
 		};

@@ -117,10 +117,10 @@ void Menu::Open(const bool& clearConsole)
 		}
 	}
 }
-void Menu::Close()
+void Menu::Close(const bool& openPrevious)
 {
 	m_paused = m_opened = false;
-	if (m_previousMenu != nullptr)
+	if (openPrevious && m_previousMenu != nullptr)
 	{
 		m_previousMenu->Open();
 	}

@@ -26,7 +26,7 @@ namespace QuoteList
 			void OptionAct();
 
 			void Open(const bool& clearConsole = true);
-			void Close();
+			void Close(const bool& openPrevious = true);
 			void Pause();
 		};
 	}

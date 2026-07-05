@@ -84,13 +84,7 @@ static void CreateQuote()
 	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	quotesList.push_back(std::make_unique<Quote>(content, author, source));
-
-	// Author found
-	quotesByAuthors[author].push_back(quotesList.back().get());
-
-	// Source found
-	quotesBySources[source].push_back(quotesList.back().get());
+	AddQuote(Quote(content, author, source));
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);

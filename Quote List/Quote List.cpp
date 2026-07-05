@@ -96,7 +96,24 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 
 	for (const Quote* quote : quotes)
 	{
-		quotesListMenu.AddOption(UI::MenuOption(quote->Format(), []() {}));
+		quotesListMenu.AddOption
+		(
+			UI::MenuOption
+			(
+				quote->Format(),
+				[&quotesListMenu]()
+				{
+					UI::Menu optionMenu(L"What to do with the quote?", &quotesListMenu);
+
+					optionMenu.AddOption(UI::MenuOption(L"Edit", []() {}));
+					optionMenu.AddOption(UI::MenuOption(L"Edit", []() {}));
+					optionMenu.AddOption(UI::MenuOption(L"Back",
+						[&optionMenu]() {optionMenu.Close(); }));
+
+					optionMenu.Open();
+				}
+			)
+		);
 	}
 	quotesListMenu.AddOption(UI::MenuOption(L"Back", 
 		[&quotesListMenu]() {quotesListMenu.Close(); }));

@@ -90,23 +90,41 @@ static void CreateQuote()
 
 
 static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
-	const std::vector<Quote*>& quotes)
+	std::vector<Quote*> quotes)
 {
 	UI::Menu quotesListMenu(menuName, previousMenu);
 
-	for (const Quote* quote : quotes)
+	for (Quote* quote : quotes)
 	{
 		quotesListMenu.AddOption
 		(
 			UI::MenuOption
 			(
 				quote->Format(),
-				[&quotesListMenu]()
+				[&quotesListMenu, &quote]()
 				{
 					UI::Menu optionMenu(L"What to do with the quote?", &quotesListMenu);
 
-					optionMenu.AddOption(UI::MenuOption(L"Edit", []() {}));
-					optionMenu.AddOption(UI::MenuOption(L"Edit", []() {}));
+					optionMenu.AddOption
+					(
+						UI::MenuOption
+						(
+							L"Edit",
+							[&optionMenu, &quote]()
+							{
+								UI::Menu whatToEditMenu(L"What do you want to edit?", &optionMenu);
+								
+								whatToEditMenu.AddOption(UI::MenuOption(L"Content", []() {}));
+								whatToEditMenu.AddOption(UI::MenuOption(L"Author", []() {}));
+								whatToEditMenu.AddOption(UI::MenuOption(L"Source", []() {}));
+								whatToEditMenu.AddOption(UI::MenuOption(L"Back",
+									[&whatToEditMenu]() { whatToEditMenu.Close(); }));
+
+								whatToEditMenu.Open();
+							}
+						)
+					);
+					optionMenu.AddOption(UI::MenuOption(L"Delete", []() {}));
 					optionMenu.AddOption(UI::MenuOption(L"Back",
 						[&optionMenu]() {optionMenu.Close(); }));
 
@@ -123,7 +141,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 
 
 static void OpenSortedQuotesList(const std::wstring& menuName, const std::wstring& unkownOptionName,
-	UI::Menu* previousMenu, const std::map<std::wstring, std::vector<Quote*>>& sortingMap)
+	UI::Menu* previousMenu, std::map<std::wstring, std::vector<Quote*>>& sortingMap)
 {
 	UI::Menu sortWayMenu(menuName, previousMenu);
 

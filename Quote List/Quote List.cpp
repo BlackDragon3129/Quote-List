@@ -89,10 +89,10 @@ static void CreateQuote()
 }
 
 
-static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousName,
+static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 	const std::vector<Quote*>& quotes)
 {
-	UI::Menu quotesListMenu(menuName, previousName);
+	UI::Menu quotesListMenu(menuName, previousMenu);
 
 	for (const Quote* quote : quotes)
 	{
@@ -102,6 +102,31 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousName,
 		[&quotesListMenu]() {quotesListMenu.Close(); }));
 
 	quotesListMenu.Open();
+}
+
+
+static void OpenSortedQuotesList(const std::wstring& menuName, const std::wstring& unkownOptionName,
+	UI::Menu* previousMenu, const std::map<std::wstring, std::vector<Quote*>>& sortingMap)
+{
+	UI::Menu sortWayMenu(menuName, previousMenu);
+
+	for (const auto& pair : sortingMap)
+	{
+		sortWayMenu.AddOption
+		(
+			UI::MenuOption
+			(
+				(pair.first == L"" ? unkownOptionName : pair.first),
+				[&sortWayMenu, &sortWayName = pair.first, &quotes = pair.second]()
+				{
+					OpenQuotesList(L"Quotes from " + sortWayName, &sortWayMenu, quotes);
+				}
+			)
+		);
+	}
+	sortWayMenu.AddOption(UI::MenuOption(L"Back", [&sortWayMenu]() {sortWayMenu.Close(); }));
+
+	sortWayMenu.Open();
 }
 
 
@@ -116,29 +141,8 @@ static void ShowQuotesList()
 			L"Sort by authors", 
 			[&sortTypeMenu]()
 			{
-				UI::Menu authorChoosingMenu(L"Choose an author", &sortTypeMenu);
-
-				for (const auto& pair : quotesByAuthors)
-				{
-					authorChoosingMenu.AddOption
-					(
-						UI::MenuOption
-						(
-							(pair.first == L"" ? L"Unknown author" : pair.first.c_str()),
-							[&authorChoosingMenu,
-							&authorName = pair.first, &authorQuotes = pair.second]()
-							{
-								OpenQuotesList(L"Quotes from " + authorName,
-									&authorChoosingMenu, authorQuotes);
-							}
-						)
-					);
-				}
-
-				authorChoosingMenu.AddOption(UI::MenuOption(L"Back",
-					[&authorChoosingMenu]() { authorChoosingMenu.Close(); }));
-
-				authorChoosingMenu.Open();
+				OpenSortedQuotesList(L"Choose aa author", L"Unknown author", &sortTypeMenu,
+					quotesBySources);
 			}
 		)
 	);
@@ -150,29 +154,8 @@ static void ShowQuotesList()
 			L"Sort by sources",
 			[&sortTypeMenu]()
 			{
-				UI::Menu sourceChoosingMenu(L"Choose a source", &sortTypeMenu);
-
-				for (const auto& pair : quotesBySources)
-				{
-					sourceChoosingMenu.AddOption
-					(
-						UI::MenuOption
-						(
-							(pair.first == L"" ? L"Unknown source" : pair.first.c_str()),
-							[&sourceChoosingMenu, 
-							&sourceName = pair.first, &sourceQuotes = pair.second]()
-							{
-								OpenQuotesList(L"Quotes from " + sourceName,
-									&sourceChoosingMenu, sourceQuotes);
-							}
-						)
-					);
-				}
-
-				sourceChoosingMenu.AddOption(UI::MenuOption(L"Back",
-					[&sourceChoosingMenu]() { sourceChoosingMenu.Close(); }));
-
-				sourceChoosingMenu.Open();
+				OpenSortedQuotesList(L"Choose a source", L"Unknown source", &sortTypeMenu,
+					quotesBySources);
 			}
 		)
 	);

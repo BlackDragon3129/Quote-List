@@ -90,6 +90,53 @@ static void CreateQuote()
 }
 
 
+static void DeleteQuote(Quote* quote)
+{
+	// Deletion from quotesByAuthors
+	auto authorPair = quotesByAuthors.find(quote->Author);
+	auto& authorQuotes = authorPair->second;
+	authorQuotes.erase
+	(
+		std::find
+		(
+			authorQuotes.begin(),
+			authorQuotes.end(),
+			quote
+		)
+	);
+	if (authorQuotes.empty())
+	{
+		quotesByAuthors.erase(authorPair);
+	}
+
+	// Deletion from quotesBySources
+	auto sourcePair = quotesBySources.find(quote->Source);
+	auto& sourceQuotes = sourcePair->second;
+	sourceQuotes.erase
+	(
+		std::find
+		(
+			sourceQuotes.begin(),
+			sourceQuotes.end(),
+			quote
+		)
+	);
+	if (sourceQuotes.empty())
+	{
+		quotesBySources.erase(sourcePair);
+	}
+
+	// Deletion from the main list
+	quotesList.remove_if
+	(
+		[quote](const std::unique_ptr<Quote>& ptr)
+		{
+			return ptr.get() == quote;
+		}
+	);
+}
+
+
 static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 	std::vector<Quote*> quotes)
 {
@@ -218,7 +265,34 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 						UI::MenuOption
 						(
 							L"Delete",
-							[]() {}
+							[&optionMenu, &quote]()
+							{
+								UI::Menu areYouSureMenu(L"Are you sure to delete the quote «" +
+									quote->Content + L"»", &optionMenu);
+
+								areYouSureMenu.AddOption
+								(
+									UI::MenuOption
+									(
+										L"Yes",
+										[&areYouSureMenu, &quote]() 
+										{
+											system("cls");
+
+											DeleteQuote(quote);
+
+											std::wcout << "The quote has been successfully deleted!";
+											Sleep(2.0f);
+
+											areYouSureMenu.Close();
+										}
+									)
+								);
+								areYouSureMenu.AddOption(UI::MenuOption(L"No",
+									[&areYouSureMenu]() { areYouSureMenu.Close(); }));
+
+								areYouSureMenu.Open();
+							}
 						)
 					);
 					optionMenu.AddOption(UI::MenuOption(L"Back",

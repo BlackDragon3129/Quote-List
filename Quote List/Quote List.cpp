@@ -8,6 +8,7 @@
 #include <Windows.h>
 #include <io.h>
 #include <fcntl.h>
+#include <algorithm>
 
 #include <Quote.hpp>
 #include <BaseLibrary.hpp>
@@ -66,7 +67,7 @@ static void CreateQuote()
 	// It's impossible to create empty quote
 	if (content == L"")
 	{
-		std::cout << "Quote must be not empty!" << std::endl;
+		std::wcout << L"Quote must be not empty!" << std::endl;
 		Sleep(2.0f);
 		return;
 	}
@@ -141,7 +142,37 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 										}
 									)
 								);
-								whatToEditMenu.AddOption(UI::MenuOption(L"Author", []() {}));
+								whatToEditMenu.AddOption
+								(
+									UI::MenuOption
+									(
+										L"Author", 
+										[&whatToEditMenu, &quote]()
+										{
+											system("cls");
+
+											std::wstring newAuthor = Input(L"Enter new quote's author: ");
+
+											std::vector<Quote*>* authorQuotes = &quotesByAuthors[quote->Author];
+											authorQuotes->erase
+											(
+												std::find(authorQuotes->begin(), authorQuotes->end(), quote)
+											);
+											if (authorQuotes->size() == 0)
+											{
+												quotesByAuthors.erase(quote->Author);
+											}
+
+											quote->Author = newAuthor;
+											quotesByAuthors[newAuthor].push_back(quote);
+
+											std::wcout << L"Author has been successfully changed!";
+
+											Sleep(2.0f);
+											whatToEditMenu.Draw();
+										}
+									)
+								);
 								whatToEditMenu.AddOption(UI::MenuOption(L"Source", []() {}));
 								whatToEditMenu.AddOption(UI::MenuOption(L"Back",
 									[&whatToEditMenu]() { whatToEditMenu.Close(); }));
@@ -150,7 +181,14 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 							}
 						)
 					);
-					optionMenu.AddOption(UI::MenuOption(L"Delete", []() {}));
+					optionMenu.AddOption
+					(
+						UI::MenuOption
+						(
+							L"Delete",
+							[]() {}
+						)
+					);
 					optionMenu.AddOption(UI::MenuOption(L"Back",
 						[&optionMenu]() {optionMenu.Close(); }));
 
@@ -202,8 +240,8 @@ static void ShowQuotesList()
 			L"Sort by authors", 
 			[&sortTypeMenu]()
 			{
-				OpenSortedQuotesList(L"Choose aa author", L"Unknown author", &sortTypeMenu,
-					quotesBySources);
+				OpenSortedQuotesList(L"Choose an author", L"Unknown author", &sortTypeMenu,
+					quotesByAuthors);
 			}
 		)
 	);

@@ -1,5 +1,7 @@
 #pragma once
 #include <Windows.h>
+#include <shlobj.h>
+#include <string>
 #include <iostream>
 #include <functional>
 #include <chrono>
@@ -60,6 +62,25 @@ namespace QuoteList
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds((int)(seconds * 1000)));
 	}
+
+
+	static std::wstring GetAppDataPath()
+	{
+		PWSTR pszPath = NULL;
+		GUID folderId = FOLDERID_LocalAppData;
+
+		HRESULT hr = SHGetKnownFolderPath(folderId, 0, NULL, &pszPath);
+
+		if (SUCCEEDED(hr))
+		{
+			std::wstring path(pszPath);
+			CoTaskMemFree(pszPath);
+			return path;
+		}
+
+		return L"";
+	}
+
 
 	typedef std::function<void()> Function;
 }

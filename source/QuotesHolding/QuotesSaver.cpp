@@ -3,16 +3,20 @@
 
 #include <iostream>
 #include <fstream>
+#include <Windows.h>
 
 using namespace QuoteList::QuotesHolding;
 
 
 void QuotesSaver::Save(const std::vector<Quote>& quotes)
 {
-	std::wstring targetPath = GetAppDataPath() + L"BlackDragon3129\\QuotesList\\Quotes.quo";
+	std::wstring targetPath = GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
+	std::wstring targetFile = L"Quotes.quo";
 
-	std::ofstream saveFile;
-	saveFile.open(targetPath);
+	SHCreateDirectoryExW(NULL, targetPath.c_str(), NULL);
+
+	std::wofstream saveFile;
+	saveFile.open(targetPath + targetFile);
 
 	if (saveFile.is_open())
 	{

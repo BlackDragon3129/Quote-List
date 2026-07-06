@@ -85,6 +85,8 @@ static void AddQuote(const Quote& newQuote)
 	quotesList.push_back(std::make_unique<Quote>(newQuote));
 	quotesByAuthors[newQuote.Author].push_back(quotesList.back().get());
 	quotesBySources[newQuote.Source].push_back(quotesList.back().get());
+
+	SaveQuotes();
 }
 
 
@@ -210,7 +212,11 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											{
 												quote->Content = newContent;
 												std::wcout << L"The content of the quote has been " <<
-													"successfully changed!";
+													"successfully changed!" << std::endl;
+
+												std::wcout << "Saving the change..." << std::endl;
+												SaveQuotes();
+												std::wcout << "The change has been saved!";
 
 												Sleep(2.0f);
 
@@ -246,7 +252,11 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											quote->Author = newAuthor;
 											quotesByAuthors[newAuthor].push_back(quote);
 
-											std::wcout << L"Author has been successfully changed!";
+											std::wcout << L"Author has been successfully changed!" << std::endl;
+
+											std::wcout << "Saving the change..." << std::endl;
+											SaveQuotes();
+											std::wcout << "The change has been saved!";
 
 											Sleep(2.0f);
 											
@@ -282,6 +292,10 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											quotesBySources[newSource].push_back(quote);
 
 											std::wcout << L"Source has been successfully changed!";
+
+											std::wcout << "Saving the change..." << std::endl;
+											SaveQuotes();
+											std::wcout << "The change has been saved!";
 
 											Sleep(2.0f);
 
@@ -321,6 +335,11 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											DeleteQuote(quote);
 
 											std::wcout << "The quote has been successfully deleted!";
+
+											std::wcout << "Saving the change..." << std::endl;
+											SaveQuotes();
+											std::wcout << "The change has been saved!";
+
 											Sleep(2.0f);
 
 											areYouSureMenu.Close(false);

@@ -75,7 +75,7 @@ namespace QuoteList
 		{
 			std::wstring path(pszPath);
 			CoTaskMemFree(pszPath);
-			return path;
+			return path + L"\\";
 		}
 
 		return L"";

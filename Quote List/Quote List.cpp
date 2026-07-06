@@ -16,8 +16,11 @@
 #include <UI/Menu.hpp>
 #include <UI/MenuOption.hpp>
 
+#include <QuotesHolding/QuotesSaver.hpp>
+
 using namespace std;
 using namespace QuoteList;
+using namespace QuoteList::QuotesHolding;
 
 
 
@@ -46,6 +49,20 @@ static std::vector<Quote*> ListToVector(const std::list<std::unique_ptr<Quote>>&
 }
 
 
+static std::vector<Quote> PtrVectorToValues(const std::vector<Quote*>& vec)
+{
+	std::vector<Quote> destVector;
+	destVector.reserve(vec.size());
+
+	for (const Quote* ptr : vec)
+	{
+		destVector.push_back(*ptr);
+	}
+
+	return destVector;
+}
+
+
 static std::wstring Input(const wchar_t* prompt)
 {
 	std::wstring input;
@@ -54,6 +71,12 @@ static std::wstring Input(const wchar_t* prompt)
 	std::getline(std::wcin, input);
 
 	return input;
+}
+
+
+static void SaveQuotes()
+{
+	QuotesSaver::Save(PtrVectorToValues(ListToVector(quotesList)));
 }
 
 

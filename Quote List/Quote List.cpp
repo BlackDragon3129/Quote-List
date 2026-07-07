@@ -18,6 +18,7 @@
 
 #include <QuotesHolding/QuotesSaver.hpp>
 #include <QuotesHolding/QuotesLoader.hpp>
+#include <QuotesHolding/Cryptographer.hpp>
 
 using namespace std;
 using namespace QuoteList;

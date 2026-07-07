@@ -8,16 +8,16 @@ using namespace QuoteList::QuotesHolding;
 
 std::wstring Cryptographer::Crypt(const std::wstring& originalData)
 {
-	int keys[] = { Randint(1, 15), Randint(1, 7), Randint(1, 5) };
+	wchar_t keys[] = { Randint(1, 15), Randint(1, 7), Randint(1, 5) };
 
 	std::wstring cryptedData =
-		std::to_wstring(keys[0]) + "," +
-		std::to_wstring(keys[1]) + "," +
-		std::to_wstring(keys[2]) + '\n';
+		std::to_wstring(keys[0]) + L"," +
+		std::to_wstring(keys[1]) + L"," +
+		std::to_wstring(keys[2]) + L'\n';
 
 	for (const wchar_t& symbol : originalData)
 	{
-		cryptedData.append((symbol + keys[0] - keys[1]) * keys[2]);
+		cryptedData.push_back((symbol + keys[0] - keys[1]) * keys[2]);
 	}
 
 	return cryptedData;

@@ -17,6 +17,7 @@
 #include <UI/MenuOption.hpp>
 
 #include <QuotesHolding/QuotesSaver.hpp>
+#include <QuotesHolding/QuotesLoader.hpp>
 
 using namespace std;
 using namespace QuoteList;
@@ -85,8 +86,6 @@ static void AddQuote(const Quote& newQuote)
 	quotesList.push_back(std::make_unique<Quote>(newQuote));
 	quotesByAuthors[newQuote.Author].push_back(quotesList.back().get());
 	quotesBySources[newQuote.Source].push_back(quotesList.back().get());
-
-	SaveQuotes();
 }
 
 
@@ -110,6 +109,8 @@ static void CreateQuote()
 	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
 	AddQuote(Quote(content, author, source));
+
+	SaveQuotes();
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
 	Sleep(2.0f);
@@ -449,11 +450,22 @@ int wmain(int argc, wchar_t* argv[])
 	_setmode(_fileno(stdin), _O_U16TEXT);
 	_setmode(_fileno(stderr), _O_U16TEXT);
 
+
+	// Quotes loading
+	std::vector<Quote> quotes = QuotesLoader::Load();
+
+	for (const Quote quote : quotes)
+	{
+		AddQuote(quote);
+	}
+
+
 	// Menu initialisation
 	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
-	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
-	mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));
+	// TODO: add options
+	// mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
+	// mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));
 	mainMenu.AddOption(UI::MenuOption(L"GitHub", []() {}));
 	mainMenu.AddOption(UI::MenuOption(L"Exit", []() { exit(0); }));
 

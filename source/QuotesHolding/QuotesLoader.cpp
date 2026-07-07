@@ -1,4 +1,5 @@
 #include <QuotesHolding/QuotesLoader.hpp>
+#include <QuotesHolding/Cryptographer.hpp>
 #include <BaseLibrary.hpp>
 #include <Quote.hpp>
 #include <vector>
@@ -16,19 +17,20 @@ std::vector<Quote> QuotesLoader::Load()
 	std::wstring targetFile = L"Quotes.quo";
 
 	std::wifstream saveFile(targetPath + targetFile);
-	std::vector<std::wstring> lines;
+	std::wstring data = L"";
 
-	std::wstring line = L"";
+	std::wstring line;
 	if (saveFile.is_open())
 	{
 		while (std::getline(saveFile, line))
 		{
-			lines.push_back(line);
-			line = L"";
+			data.append(line);
 		}
 	}
 
 	saveFile.close();
+
+	std::vector<std::wstring> lines = Split(Cryptographer::Decrypt(data), L'\n');
 
 	std::vector<Quote> quotes;
 	std::size_t quotesCount = lines.size() / 3;

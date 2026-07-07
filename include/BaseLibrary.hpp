@@ -7,6 +7,7 @@
 #include <chrono>
 #include <thread>
 
+
 namespace QuoteList
 {
 	struct Math
@@ -47,6 +48,12 @@ namespace QuoteList
 		static const char ENTER = 13;
 		static const char ESCAPE = 27;
 	};
+
+
+	static int Randint(const int& min, const int& max)
+	{
+		return min + rand() % (max - min);
+	}
 
 
 	static void CursorGotoXY(const unsigned int& x, const unsigned int& y)

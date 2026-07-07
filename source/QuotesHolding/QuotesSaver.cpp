@@ -1,4 +1,5 @@
 #include <QuotesHolding/QuotesSaver.hpp>
+#include <QuotesHolding/Cryptographer.hpp>
 #include <BaseLibrary.hpp>
 
 #include <iostream>
@@ -13,6 +14,19 @@ void QuotesSaver::Save(const std::vector<Quote>& quotes)
 	std::wstring targetPath = GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
 	std::wstring targetFile = L"Quotes.quo";
 
+	std::wstring data = L"";
+	for (const Quote& quote : quotes)
+	{
+		data.append
+		(
+			quote.Content + L'\n' +
+			quote.Author + L'\n' +
+			quote.Source + L'\n'
+		);
+	}
+	data = Cryptographer::Crypt(data);
+
+
 	SHCreateDirectoryExW(NULL, targetPath.c_str(), NULL);
 
 	std::wofstream saveFile;
@@ -20,13 +34,7 @@ void QuotesSaver::Save(const std::vector<Quote>& quotes)
 
 	if (saveFile.is_open())
 	{
-		for (const Quote& quote : quotes)
-		{
-			saveFile <<
-				quote.Content << std::endl <<
-				quote.Author << std::endl <<
-				quote.Source << std::endl;
-		}
+		saveFile << data;
 	}
 
 	saveFile.close();

@@ -24,4 +24,25 @@ std::wstring Cryptographer::Crypt(const std::wstring& originalData)
 }
 
 
-std::wstring Cryptographer::Decrypt(const std::wstring& cryptedData);
+std::wstring Cryptographer::Decrypt(const std::wstring& cryptedData)
+{
+	std::vector<std::wstring> keysAndData = Split(cryptedData, '\n');\
+	// Keys go before data
+	std::vector<std::wstring> keysString = Split(keysAndData[0], L',');
+	int keys[] =
+	{
+		std::stoi(keysString[0]),
+		std::stoi(keysString[1]),
+		std::stoi(keysString[2])
+	};
+
+	std::wstring decryptedData = L"";
+	decryptedData.reserve(keysAndData[1].size());
+
+	for (const wchar_t& symbol : keysAndData[1])
+	{
+		decryptedData.push_back(symbol / keys[2] + keys[1] - keys[0]);
+	}
+
+	return decryptedData;
+}

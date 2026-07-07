@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <string> 
+#include <locale>
+#include <codecvt>
 
 using namespace QuoteList;
 using namespace QuoteList::QuotesHolding;
@@ -17,6 +19,8 @@ std::vector<Quote> QuotesLoader::Load()
 	std::wstring targetFile = L"Quotes.quo";
 
 	std::wifstream saveFile(targetPath + targetFile);
+	saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+
 	std::wstring data = L"";
 
 	std::wstring line;
@@ -24,8 +28,12 @@ std::vector<Quote> QuotesLoader::Load()
 	{
 		while (std::getline(saveFile, line))
 		{
-			data.append(line);
+			data.append(line + L'\n');
 		}
+	}
+	else
+	{
+		return std::vector<Quote>();
 	}
 
 	saveFile.close();

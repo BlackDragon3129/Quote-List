@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <locale>
+#include <codecvt>
 #include <Windows.h>
 
 using namespace QuoteList::QuotesHolding;
@@ -30,6 +32,8 @@ void QuotesSaver::Save(const std::vector<Quote>& quotes)
 	SHCreateDirectoryExW(NULL, targetPath.c_str(), NULL);
 
 	std::wofstream saveFile;
+	saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+
 	saveFile.open(targetPath + targetFile);
 
 	if (saveFile.is_open())

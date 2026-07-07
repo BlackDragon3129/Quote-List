@@ -26,7 +26,8 @@ std::wstring Cryptographer::Crypt(const std::wstring& originalData)
 
 std::wstring Cryptographer::Decrypt(const std::wstring& cryptedData)
 {
-	std::vector<std::wstring> keysAndData = Split(cryptedData, '\n');\
+	std::vector<std::wstring> keysAndData = Split(cryptedData, '\n');
+
 	// Keys go before data
 	std::vector<std::wstring> keysString = Split(keysAndData[0], L',');
 	int keys[] =
@@ -37,7 +38,6 @@ std::wstring Cryptographer::Decrypt(const std::wstring& cryptedData)
 	};
 
 	std::wstring decryptedData = L"";
-	decryptedData.reserve(keysAndData[1].size());
 
 	for (const wchar_t& symbol : keysAndData[1])
 	{

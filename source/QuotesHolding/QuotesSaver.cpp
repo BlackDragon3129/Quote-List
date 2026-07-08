@@ -1,6 +1,5 @@
 #include <QuotesHolding/QuotesSaver.hpp>
 #include <QuotesHolding/Cryptographer.hpp>
-#include <BaseLibrary.hpp>
 
 #include <iostream>
 #include <fstream>

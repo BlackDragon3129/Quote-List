@@ -9,8 +9,11 @@ file(GLOB_RECURSE SOURCES
 	"${CMAKE_SOURCE_DIR}/source/*.cpp"
 )
 
+set(RESOURCE_FILE "${CMAKE_SOURCE_DIR}/Resources/resources.rc")
+
 add_executable(QuoteList 
 "Quote List.cpp" 
+${RESOURCE_FILE}
 ${SOURCES}
 )
 

@@ -92,37 +92,6 @@ namespace QuoteList
 	}
 
 
-	static std::vector<Quote*> ListToVector(const std::list<std::unique_ptr<Quote>>& list)
-	{
-		std::vector<Quote*> destVector;
-		destVector.reserve(list.size());
-
-		for (const std::unique_ptr<Quote>& ptr : list)
-		{
-			if (ptr)
-			{
-				destVector.push_back(ptr.get());
-			}
-		}
-
-		return destVector;
-	}
-
-
-	static std::vector<Quote> PtrVectorToValues(const std::vector<Quote*>& vec)
-	{
-		std::vector<Quote> destVector;
-		destVector.reserve(vec.size());
-
-		for (const Quote* ptr : vec)
-		{
-			destVector.push_back(*ptr);
-		}
-
-		return destVector;
-	}
-
-
 	static std::wstring Input(const wchar_t* prompt)
 	{
 		std::wstring input;

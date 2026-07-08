@@ -1,7 +1,7 @@
 #pragma once
+
 #include <iostream>
 #include <type_traits>
-
 
 namespace QuoteList
 {
@@ -18,6 +18,7 @@ namespace QuoteList
 				return max;
 			return val;
 		}
+
 
 		template<typename T>
 		static T ClampReverse(const T& val, const T& min, const T& max)

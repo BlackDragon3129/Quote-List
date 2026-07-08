@@ -17,29 +17,18 @@ using namespace QuoteList::QuotesHolding;
 
 std::vector<Quote> QuotesLoader::Load()
 {
+	// Reading data from the save file
 	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
 	std::wstring targetFile = L"Quotes.quo";
 
-	std::wifstream saveFile(targetPath + targetFile);
-	saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-
-	std::wstring data = L"";
-
-	std::wstring line;
-	if (saveFile.is_open())
-	{
-		while (std::getline(saveFile, line))
-		{
-			data.append(line + L'\n');
-		}
-	}
-	else
+	std::wstring data = FileSystem::ReadFile((targetPath + targetFile).c_str());
+	if (data.empty())
 	{
 		return std::vector<Quote>();
 	}
 
-	saveFile.close();
 
+	// Decrypting and loading
 	std::vector<std::wstring> lines = String::Split(Cryptographer::Decrypt(data), L'\n');
 
 	std::vector<Quote> quotes;

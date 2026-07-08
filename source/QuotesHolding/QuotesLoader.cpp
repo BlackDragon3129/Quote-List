@@ -29,7 +29,7 @@ std::vector<Quote> QuotesLoader::Load()
 
 	system("cls");
 	std::wcout << data;
-	Sleep(3.0f);
+	Console::Sleep(3.0f);
 
 
 	// Decrypting and loading

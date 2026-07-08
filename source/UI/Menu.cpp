@@ -50,12 +50,12 @@ void Menu::Draw(const bool& clearConsole) const
 		// Arrow output
 		if (m_currentOptionIndex == i)
 		{
-			CursorGotoXY(0, 2 + i);
+			Console::CursorGotoXY(0, 2 + i);
 			std::wcout << ">";
 		}
 
 		// Option name output
-		CursorGotoXY(2, 2 + i);
+		Console::CursorGotoXY(2, 2 + i);
 		std::wcout << m_options.at(i).Name;
 	}
 }

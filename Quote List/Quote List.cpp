@@ -54,7 +54,7 @@ static void CreateQuote()
 
 	std::wstring content, author, source;
 
-	content = Input(L"Enter quote's content: ");
+	content = Console::Input(L"Enter quote's content: ");
 	// It's impossible to create empty quote
 	if (content == L"")
 	{
@@ -64,8 +64,8 @@ static void CreateQuote()
 		return;
 	}
 
-	author = Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
-	source = Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
+	author = Console::Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
+	source = Console::Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
 	AddQuote(Quote(content, author, source));
 
@@ -159,7 +159,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 										{
 											system("cls");
 
-											std::wstring newContent = Input(L"Enter new quote's content: ");
+											std::wstring newContent = Console::Input(L"Enter new quote's content: ");
 											if (newContent.empty())
 											{
 												std::wcout << L"The quote can not be empty!";
@@ -197,7 +197,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 										{
 											system("cls");
 
-											std::wstring newAuthor = Input(L"Enter new quote's author: ");
+											std::wstring newAuthor = Console::Input(L"Enter new quote's author: ");
 
 											std::vector<Quote*>* authorQuotes = &quotesByAuthors[quote->Author];
 											authorQuotes->erase
@@ -236,7 +236,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 										{
 											system("cls");
 
-											std::wstring newSource = Input(L"Enter new quote's source: ");
+											std::wstring newSource = Console::Input(L"Enter new quote's source: ");
 
 											std::vector<Quote*>* sourceQuotes = &quotesBySources[quote->Source];
 											sourceQuotes->erase

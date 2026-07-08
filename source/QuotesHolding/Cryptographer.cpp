@@ -1,5 +1,8 @@
 #include <QuotesHolding/Cryptographer.hpp>
 #include <Library/LibrariesRoot.hpp>
+
+#include <iostream>
+#include <string>
 #include <fstream>
 
 using namespace QuoteList;

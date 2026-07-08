@@ -37,14 +37,20 @@ namespace QuoteList
 		}
 
 
-		static void WriteFile(const wchar_t* targetPath, const wchar_t* data)
+		static void WriteFile(std::wstring targetPath, const std::wstring& fileName,
+			const wchar_t* data)
 		{
-			CreateFolder(targetPath);
+			if (targetPath.back() != L'\\')
+			{
+				targetPath.push_back(L'\\');
+			}
+
+			CreateFolder(targetPath.c_str());
 
 			std::wofstream saveFile;
 			saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
 
-			saveFile.open(targetPath);
+			saveFile.open(targetPath + fileName);
 
 			if (saveFile.is_open())
 			{
@@ -74,6 +80,8 @@ namespace QuoteList
 			{
 				return L"";
 			}
+
+			return data;
 		}
 	};
 }

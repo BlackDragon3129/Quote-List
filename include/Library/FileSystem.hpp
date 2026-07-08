@@ -35,7 +35,22 @@ namespace QuoteList
 		}
 
 
-		static void WriteFile(const wchar_t* targetPath)
+		static void WriteFile(const wchar_t* targetPath, const wchar_t* data)
+		{
+			CreateFolder(targetPath);
+
+			std::wofstream saveFile;
+			saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
+
+			saveFile.open(targetPath);
+
+			if (saveFile.is_open())
+			{
+				saveFile << data;
+			}
+
+			saveFile.close();
+		}
 
 
 		static std::wstring ReadFile(const wchar_t* targetPath)

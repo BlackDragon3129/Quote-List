@@ -16,9 +16,7 @@ using namespace QuoteList::QuotesHolding;
 
 void QuotesSaver::Save(const std::vector<Quote>& quotes)
 {
-	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
-	std::wstring targetFile = L"Quotes.quo";
-
+	// Formating and crypting data
 	std::wstring data = L"";
 	for (const Quote& quote : quotes)
 	{
@@ -32,17 +30,9 @@ void QuotesSaver::Save(const std::vector<Quote>& quotes)
 	data = Cryptographer::Crypt(data);
 
 
-	
+	// Saving the data
+	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
+	std::wstring targetFile = L"Quotes.quo";
 
-	std::wofstream saveFile;
-	saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));
-
-	saveFile.open(targetPath + targetFile);
-
-	if (saveFile.is_open())
-	{
-		saveFile << data;
-	}
-
-	saveFile.close();
+	FileSystem::WriteFile((targetPath + targetFile).c_str(), data.c_str());
 }

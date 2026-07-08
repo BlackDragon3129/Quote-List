@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include <thread>
+#include <string>
+#include <chrono>
 #include <Windows.h>
 
 

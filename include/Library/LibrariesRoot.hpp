@@ -6,6 +6,8 @@
 #include <Library/String.hpp>
 #include <Library/Vector.hpp>
 
+#include <functional>
+
 
 namespace QuoteList
 {

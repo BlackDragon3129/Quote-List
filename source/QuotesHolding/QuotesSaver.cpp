@@ -1,18 +1,22 @@
 #include <QuotesHolding/QuotesSaver.hpp>
 #include <QuotesHolding/Cryptographer.hpp>
 
+#include <Library/LibrariesRoot.hpp>
+
 #include <iostream>
 #include <fstream>
 #include <locale>
 #include <codecvt>
 #include <Windows.h>
 
+
+using namespace QuoteList;
 using namespace QuoteList::QuotesHolding;
 
 
 void QuotesSaver::Save(const std::vector<Quote>& quotes)
 {
-	std::wstring targetPath = GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
+	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
 	std::wstring targetFile = L"Quotes.quo";
 
 	std::wstring data = L"";
@@ -28,7 +32,7 @@ void QuotesSaver::Save(const std::vector<Quote>& quotes)
 	data = Cryptographer::Crypt(data);
 
 
-	SHCreateDirectoryExW(NULL, targetPath.c_str(), NULL);
+	
 
 	std::wofstream saveFile;
 	saveFile.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t>));

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Windows.h>
+#include <shlobj.h>
+#include <string>
 #include <iostream>
 #include <fstream> 
 #include <locale>
@@ -31,7 +33,7 @@ namespace QuoteList
 
 		static void CreateFolder(const wchar_t* path)
 		{
-			SHCreateDirectoryExW(NULL, path.c_str(), NULL);
+			SHCreateDirectoryExW(NULL, path, NULL);
 		}
 
 
@@ -61,9 +63,9 @@ namespace QuoteList
 			std::wstring data = L"";
 
 			std::wstring line;
-			if (saveFile.is_open())
+			if (file.is_open())
 			{
-				while (std::getline(saveFile, line))
+				while (std::getline(file, line))
 				{
 					data.append(line + L'\n');
 				}

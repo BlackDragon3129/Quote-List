@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
 
-#include <BaseLibrary.hpp>
+#include <Library/LibrariesRoot.hpp>
 
 
 namespace QuoteList

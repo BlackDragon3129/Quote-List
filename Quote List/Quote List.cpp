@@ -11,7 +11,7 @@
 #include <algorithm>
 
 #include <Quote.hpp>
-#include <BaseLibrary.hpp>
+#include <Library/LibrariesRoot.hpp>
 
 #include <UI/Menu.hpp>
 #include <UI/MenuOption.hpp>
@@ -36,7 +36,7 @@ UI::Menu mainMenu(L"Quotes List");
 
 static void SaveQuotes()
 {
-	QuotesSaver::Save(PtrVectorToValues(ListToVector(quotesList)));
+	QuotesSaver::Save(Vector::PtrVectorToValues(Vector::ListToVector(quotesList)));
 }
 
 
@@ -393,7 +393,7 @@ static void ShowQuotesList()
 			L"Show full list",
 			[&sortTypeMenu]() 
 			{
-				OpenQuotesList(L"Full quotes list", &sortTypeMenu, ListToVector(quotesList));
+				OpenQuotesList(L"Full quotes list", &sortTypeMenu, Vector::ListToVector(quotesList));
 			}
 		)
 	);

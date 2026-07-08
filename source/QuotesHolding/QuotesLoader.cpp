@@ -1,7 +1,9 @@
 #include <QuotesHolding/QuotesLoader.hpp>
 #include <QuotesHolding/Cryptographer.hpp>
-#include <BaseLibrary.hpp>
 #include <Quote.hpp>
+
+#include <Library/LibrariesRoot.hpp>
+
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -15,7 +17,7 @@ using namespace QuoteList::QuotesHolding;
 
 std::vector<Quote> QuotesLoader::Load()
 {
-	std::wstring targetPath = GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
+	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
 	std::wstring targetFile = L"Quotes.quo";
 
 	std::wifstream saveFile(targetPath + targetFile);
@@ -38,7 +40,7 @@ std::vector<Quote> QuotesLoader::Load()
 
 	saveFile.close();
 
-	std::vector<std::wstring> lines = Split(Cryptographer::Decrypt(data), L'\n');
+	std::vector<std::wstring> lines = String::Split(Cryptographer::Decrypt(data), L'\n');
 
 	std::vector<Quote> quotes;
 	std::size_t quotesCount = lines.size() / 3;

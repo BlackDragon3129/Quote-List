@@ -27,10 +27,6 @@ std::vector<Quote> QuotesLoader::Load()
 		return std::vector<Quote>();
 	}
 
-	system("cls");
-	std::wcout << data;
-	Console::Sleep(3.0f);
-
 
 	// Decrypting and loading
 	std::vector<std::wstring> lines = String::Split(Cryptographer::Decrypt(data), L'\n');

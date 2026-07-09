@@ -59,7 +59,7 @@ static void CreateQuote()
 	if (content == L"")
 	{
 		std::wcout << L"Quote must be not empty!" << std::endl;
-		Sleep(2.0f);
+		Console::Sleep(2.0f);
 		mainMenu.Draw();
 		return;
 	}
@@ -72,7 +72,7 @@ static void CreateQuote()
 	SaveQuotes();
 
 	std::wcout << "The quote has been successfully created!" << std::endl;
-	Sleep(2.0f);
+	Console::Sleep(2.0f);
 
 	mainMenu.Draw();
 }
@@ -164,7 +164,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											{
 												std::wcout << L"The quote can not be empty!";
 
-												Sleep(2.0f);
+												Console::Sleep(2.0f);
 
 												whatToEditMenu.Draw();
 											}
@@ -178,7 +178,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 												SaveQuotes();
 												std::wcout << "The change has been saved!";
 
-												Sleep(2.0f);
+												Console::Sleep(2.0f);
 
 												whatToEditMenu.Close(false);
 												optionMenu.Close(false);
@@ -218,7 +218,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											SaveQuotes();
 											std::wcout << "The change has been saved!";
 
-											Sleep(2.0f);
+											Console::Sleep(2.0f);
 											
 											whatToEditMenu.Close(false);
 											optionMenu.Close(false);
@@ -257,7 +257,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											SaveQuotes();
 											std::wcout << "The change has been saved!";
 
-											Sleep(2.0f);
+											Console::Sleep(2.0f);
 
 											whatToEditMenu.Close(false);
 											optionMenu.Close(false);
@@ -300,7 +300,7 @@ static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 											SaveQuotes();
 											std::wcout << "The change has been saved!";
 
-											Sleep(2.0f);
+											Console::Sleep(2.0f);
 
 											areYouSureMenu.Close(false);
 											optionMenu.Close(false);

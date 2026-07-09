@@ -427,7 +427,8 @@ int wmain(int argc, wchar_t* argv[])
 	// TODO: add options
 	// mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
 	// mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));
-	mainMenu.AddOption(UI::MenuOption(L"GitHub", []() {}));
+	mainMenu.AddOption(UI::MenuOption(L"GitHub",
+		[]() { ShellExecute(0, 0, "https://github.com/BlackDragon3129/Quote-List", 0, 0, SW_SHOW); }));
 	mainMenu.AddOption(UI::MenuOption(L"Exit", []() { exit(0); }));
 
 	mainMenu.Open();

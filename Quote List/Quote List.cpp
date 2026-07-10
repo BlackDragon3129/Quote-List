@@ -67,11 +67,19 @@ static void CreateQuote()
 	author = Console::Input(L"Enter quote's author (if the author is unknown, leave the field empty): ");
 	source = Console::Input(L"Enter quote's source (if the source is unknown, leave the field empty): ");
 
-	AddQuote(Quote(content, author, source));
+	Quote newQuote(content, author, source);
+	std::vector<Quote> quotesVector = Vector::PtrVectorToValues(Vector::ListToVector(quotesList));
+	if (std::find(quotesVector.begin(), quotesVector.end(), newQuote) != quotesVector.end())
+	{
+		AddQuote(Quote(content, author, source));
+		SaveQuotes();
 
-	SaveQuotes();
-
-	std::wcout << "The quote has been successfully created!" << std::endl;
+		std::wcout << L"The quote has been successfully created!";
+	}
+	else
+	{
+		std::wcout << L"The quote already exists!";
+	}
 	Console::Sleep(2.0f);
 
 	mainMenu.Draw();

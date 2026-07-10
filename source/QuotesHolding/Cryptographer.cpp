@@ -11,7 +11,7 @@ using namespace QuoteList::QuotesHolding;
 
 std::wstring Cryptographer::Crypt(const std::wstring& originalData)
 {
-	wchar_t keys[] = { Random::Randint(1, 15), Random::Randint(1, 7), Random::Randint(1, 5) };
+	wchar_t keys[] = { Random::Randint(5, 15), Random::Randint(3, 7), Random::Randint(2, 5) };
 
 	std::wstring cryptedData =
 		std::to_wstring(keys[0]) + L"," +

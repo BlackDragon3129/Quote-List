@@ -42,21 +42,15 @@ void Menu::Draw(const bool& clearConsole) const
 	}
 
 	// Menu's name output
-	std::wcout << m_name;
+	std::wcout << m_name << "\n\n";
 
 	// Options output
 	for (std::size_t i = 0; i < m_options.size(); i++)
 	{
-		// Arrow output
-		if (m_currentOptionIndex == i)
-		{
-			Console::CursorGotoXY(0, 2 + i);
-			std::wcout << ">";
-		}
+		std::wcout << (m_currentOptionIndex == i? "> " : "  ");
 
 		// Option name output
-		Console::CursorGotoXY(2, 2 + i);
-		std::wcout << m_options.at(i).Name;
+		std::wcout << m_options.at(i).Name << std::endl;
 	}
 }
 

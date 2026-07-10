@@ -69,7 +69,7 @@ static void CreateQuote()
 
 	Quote newQuote(content, author, source);
 	std::vector<Quote> quotesVector = Vector::PtrVectorToValues(Vector::ListToVector(quotesList));
-	if (std::find(quotesVector.begin(), quotesVector.end(), newQuote) != quotesVector.end())
+	if (std::find(quotesVector.begin(), quotesVector.end(), newQuote) == quotesVector.end())
 	{
 		AddQuote(Quote(content, author, source));
 		SaveQuotes();

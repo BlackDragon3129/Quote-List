@@ -9,6 +9,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <algorithm>
+#include <tuple>
 
 #include <Quote.hpp>
 #include <Library/LibrariesRoot.hpp>
@@ -34,6 +35,19 @@ std::map<std::wstring, std::vector<Quote*>> quotesByAuthors, quotesBySources;
 UI::Menu mainMenu(L"Quotes List");
 
 
+static void SortQuotes()
+{
+	quotesList.sort
+	(
+		[](const std::unique_ptr<Quote>& a, const std::unique_ptr<Quote>& b)
+		{
+			return std::tie(a->Author, a->Source, a->Content) <
+				std::tie(b->Author, b->Source, b->Content);
+		}
+	);
+}
+
+
 static void SaveQuotes()
 {
 	QuotesSaver::Save(Vector::PtrVectorToValues(Vector::ListToVector(quotesList)));
@@ -45,6 +59,8 @@ static void AddQuote(const Quote& newQuote)
 	quotesList.push_back(std::make_unique<Quote>(newQuote));
 	quotesByAuthors[newQuote.Author].push_back(quotesList.back().get());
 	quotesBySources[newQuote.Source].push_back(quotesList.back().get());
+
+	SortQuotes();
 }
 
 
@@ -71,7 +87,7 @@ static void CreateQuote()
 	std::vector<Quote> quotesVector = Vector::PtrVectorToValues(Vector::ListToVector(quotesList));
 	if (std::find(quotesVector.begin(), quotesVector.end(), newQuote) == quotesVector.end())
 	{
-		AddQuote(Quote(content, author, source));
+		AddQuote(newQuote);
 		SaveQuotes();
 
 		std::wcout << L"The quote has been successfully created!";

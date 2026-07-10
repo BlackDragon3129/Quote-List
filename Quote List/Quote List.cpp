@@ -48,6 +48,23 @@ static void SortQuotes()
 }
 
 
+static void SortQuotesMap(std::map<std::wstring, std::vector<Quote*>>& map)
+{
+	for (auto& pair : map)
+	{
+		std::sort
+		(
+			pair.second.begin(), pair.second.end(),
+			[](const Quote* a, const Quote* b)
+			{
+				return std::tie(a->Author, a->Source, a->Content) <
+					std::tie(b->Author, b->Source, b->Content);
+			}
+		);
+	}
+}
+
+
 static void SaveQuotes()
 {
 	QuotesSaver::Save(Vector::PtrVectorToValues(Vector::ListToVector(quotesList)));
@@ -61,6 +78,8 @@ static void AddQuote(const Quote& newQuote)
 	quotesBySources[newQuote.Source].push_back(quotesList.back().get());
 
 	SortQuotes();
+	SortQuotesMap(quotesByAuthors);
+	SortQuotesMap(quotesBySources);
 }
 
 

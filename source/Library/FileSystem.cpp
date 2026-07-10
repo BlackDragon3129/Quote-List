@@ -36,6 +36,12 @@ void FileSystem::CreateFolder(const wchar_t* path)
 }
 
 
+bool FileSystem::Exists(const wchar_t* path)
+{
+	return std::wifstream(path).good();
+}
+
+
 void FileSystem::WriteFile(std::wstring targetPath, const std::wstring& fileName,
 	const wchar_t* data)
 {

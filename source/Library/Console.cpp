@@ -18,6 +18,22 @@ void Console::CursorGotoXY(const unsigned int& x, const unsigned int& y)
 }
 
 
+COORD Console::GetCursorPosition()
+{
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cbsi))
+	{
+		return cbsi.dwCursorPosition;
+	}
+	else
+	{
+		// The function failed. Call GetLastError() for details.
+		COORD invalid = { 0, 0 };
+		return invalid;
+	}
+}
+
+
 void Console::Sleep(float seconds)
 {
 	std::this_thread::sleep_for(std::chrono::milliseconds((int)(seconds * 1000)));

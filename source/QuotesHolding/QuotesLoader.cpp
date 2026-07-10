@@ -15,13 +15,10 @@ using namespace QuoteList;
 using namespace QuoteList::QuotesHolding;
 
 
-std::vector<Quote> QuotesLoader::Load()
+std::vector<Quote> QuotesLoader::Load(const std::wstring& path)
 {
 	// Reading data from the save file
-	std::wstring targetPath = FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\";
-	std::wstring targetFile = L"Quotes.quo";
-
-	std::wstring data = FileSystem::ReadFile((targetPath + targetFile).c_str());
+	std::wstring data = FileSystem::ReadFile(path.c_str());
 	if (data.empty())
 	{
 		return std::vector<Quote>();

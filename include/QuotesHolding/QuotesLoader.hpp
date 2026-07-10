@@ -10,7 +10,8 @@ namespace QuoteList
 	{
 		struct QuotesLoader
 		{
-			static std::vector<Quote> Load();
+			static std::vector<Quote> Load(const std::wstring& path = 
+				FileSystem::GetAppDataPath() + L"BlackDragon3129\\QuotesList\\Quotes.quo");
 		};
 	}
 }

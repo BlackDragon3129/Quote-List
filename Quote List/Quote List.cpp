@@ -168,6 +168,39 @@ static void DeleteQuote(Quote* quote)
 }
 
 
+static void ImportQuotes()
+{
+	system("cls");
+
+	std::wstring path = Console::Input(L"Input quotes dump file path: ");
+	try
+	{
+		if (FileSystem::Exists(path.c_str()))
+		{
+			std::vector<Quote> quotes = QuotesLoader::Load(path);
+
+			for (const Quote quote : quotes)
+			{
+				AddQuote(quote);
+			}
+
+			std::wcout << "The quotes have been successfully imported!";
+		}
+		else
+		{
+			std::wcout << "The file does not exist!";
+		}
+	}
+	catch (std::invalid_argument)
+	{
+		std::wcout << "Wrong file!";
+	}
+
+	Console::Sleep(2.0f);
+	mainMenu.Draw();
+}
+
+
 static void OpenQuotesList(const std::wstring& menuName, UI::Menu* previousMenu,
 	std::vector<Quote*> quotes)
 {
@@ -467,8 +500,8 @@ int wmain(int argc, wchar_t* argv[])
 	// Menu initialisation
 	mainMenu.AddOption(UI::MenuOption(L"Add quote", []() { CreateQuote(); }));
 	mainMenu.AddOption(UI::MenuOption(L"Quotes list", []() { ShowQuotesList(); }));
-	// TODO: add options
-	// mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() {}));
+	mainMenu.AddOption(UI::MenuOption(L"Import quotes", []() { ImportQuotes(); }));
+	// TODO: add option
 	// mainMenu.AddOption(UI::MenuOption(L"Settings", []() {}));
 	mainMenu.AddOption(UI::MenuOption(L"GitHub",
 		[]() { ShellExecute(0, 0, "https://github.com/BlackDragon3129/Quote-List", 0, 0, SW_SHOW); }));

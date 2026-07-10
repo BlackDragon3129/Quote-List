@@ -2,6 +2,7 @@
 
 #include <Quote.hpp>
 #include <vector>
+#include <Library/FileSystem.hpp>
 
 
 namespace QuoteList

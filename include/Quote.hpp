@@ -15,5 +15,7 @@ namespace QuoteList
 			const std::wstring& source = L"");
 
 		std::wstring Format() const;
+
+		bool operator==(const Quote& other);
 	};
 }

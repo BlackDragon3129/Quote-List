@@ -30,3 +30,12 @@ std::wstring Quote::Format() const
 
 	return formatedQuote;
 }
+
+
+bool Quote::operator==(const Quote& other)
+{
+	return
+		Content == other.Content &&
+		Author == other.Author &&
+		Source == other.Source;
+}
